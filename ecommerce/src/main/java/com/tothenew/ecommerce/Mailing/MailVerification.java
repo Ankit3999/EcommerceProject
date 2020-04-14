@@ -25,7 +25,7 @@ public class MailVerification {
         mail.setTo(user.getEmail());
         mail.setFrom("kumsag11@gmail.com");
         mail.setSubject("To verify account");
-        String uu = tokenDao.getToken(user);
+        String uu = "http://localhost:8080/activate/?token="+tokenDao.getToken(user);
         mail.setText(uu);
         javaMailSender.send(mail);
         System.out.println("Email Sent!");

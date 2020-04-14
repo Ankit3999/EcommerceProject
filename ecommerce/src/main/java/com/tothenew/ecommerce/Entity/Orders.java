@@ -6,8 +6,8 @@ import javax.persistence.*;
 @Table(name = "orders")
 public class Orders {
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long ids;
     private Long amountPaid;
     private String dateCreated;
     private String paymentMethod;
@@ -30,7 +30,7 @@ public class Orders {
     }
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "customer_user_id")
+    @JoinColumn(name = "customerId")
     private Customer customer;
 
     @OneToOne(mappedBy = "orders", cascade = CascadeType.ALL)
@@ -52,12 +52,12 @@ public class Orders {
         this.customer = customer;
     }
 
-    public Long getId() {
-        return id;
+    public Long getIds() {
+        return ids;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setIds(Long ids) {
+        this.ids = ids;
     }
 
     public Long getAmountPaid() {

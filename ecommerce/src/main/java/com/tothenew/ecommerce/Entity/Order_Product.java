@@ -22,7 +22,7 @@ public class Order_Product {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "ORDER_PRODUCT_ID")
+    @JoinColumn(name = "OrderProductStatusId")
     private Order_Status order_status;
 
     public Order_Status getOrder_status() {

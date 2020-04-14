@@ -3,15 +3,18 @@ package com.tothenew.ecommerce.Entity;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "CategoryMetadataFieldValues")
 public class CategoryMetadataFieldValues {
+    @Id
+    @GeneratedValue
+    int id;
     private String values;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "categoryId")
     private Category category;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "categoryMetadataFieldId")
     private CategoryMetadataField categoryMetadataField;
 

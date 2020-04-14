@@ -13,15 +13,15 @@ public class CategoryMetadataField {
     private Long id;
     private String name;
 
-    @OneToMany(mappedBy = "CategoryMetadataField", cascade = CascadeType.ALL)
-    private Set<CategoryMetadataFieldValues> fieldValuesSet;
+    @OneToMany(mappedBy = "categoryMetadataField", cascade = CascadeType.ALL)
+    private Set<CategoryMetadataFieldValues> categoryMetadataFieldValues;
 
-    public Set<CategoryMetadataFieldValues> getFieldValuesSet() {
-        return fieldValuesSet;
+    public Set<CategoryMetadataFieldValues> getCategoryMetadataFieldValues() {
+        return categoryMetadataFieldValues;
     }
 
-    public void setFieldValuesSet(Set<CategoryMetadataFieldValues> fieldValuesSet) {
-        this.fieldValuesSet = fieldValuesSet;
+    public void setCategoryMetadataFieldValues(Set<CategoryMetadataFieldValues> categoryMetadataFieldValues) {
+        this.categoryMetadataFieldValues = categoryMetadataFieldValues;
     }
 
     public Long getId() {

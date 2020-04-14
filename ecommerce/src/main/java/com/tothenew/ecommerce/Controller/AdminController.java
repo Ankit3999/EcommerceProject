@@ -46,24 +46,24 @@ public class AdminController {
         return responseEntity;
     }
 
-    @GetMapping("/all/customer")
+    @GetMapping("/admin/customer")
     public Page<Customer> showcustomer(@RequestParam("field") String field){
         PageRequest pageable=  PageRequest.of(0,10, Sort.by(field));
         return customerRepository.findAll(pageable);
     }
 
-    @GetMapping("/all/seller")
+    @GetMapping("/admin/seller")
     public void showseller(@RequestParam("field") String field){
         PageRequest pageable=  PageRequest.of(0,10, Sort.by(field));
         sellerRepository.findAll(pageable);
     }
 
-    @GetMapping("/activate/customer")
+    @GetMapping("/admin/activate")
     public void activateCustomer(@RequestParam("id") Long id){
         userService.activateUser(id);
     }
 
-    @GetMapping("/deactivate/customer")
+    @GetMapping("/admin/deactivate")
     public void deactivateCustomer(@RequestParam("id") Long id){
         userService.deActivateuser(id);
     }

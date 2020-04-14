@@ -13,7 +13,7 @@ public class Category {
     private Long id;
     @UniqueElements
     private String name;
-    private Long parentId;
+    //private Long parentId;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private Set<Product> products;
@@ -56,12 +56,5 @@ public class Category {
         this.name = name;
     }
 
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
 }
 
