@@ -12,10 +12,7 @@ import com.tothenew.ecommerce.repository.SellerRepository;
 import com.tothenew.ecommerce.services.CustomerService;
 import com.tothenew.ecommerce.services.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 @RestController
@@ -38,7 +35,7 @@ public class RegistrationController {
     TokenDao tokenDao;
 
 
-    @GetMapping("/customer/register")
+    @PostMapping("/register/customer")
     String saveCustomer(@Valid @RequestBody CustomerDto customerDto){
         if(customerRepository.findByEmail(customerDto.getEmail())==null) {
             Customer customer=new Customer();
@@ -52,13 +49,13 @@ public class RegistrationController {
 
     }
 
-    @GetMapping("/customer/verify")
+    @PutMapping("/verify/customer")
     void verifycustomer(@RequestParam("token") String toke){
         tokenDao.verifyToken(toke);
 
     }
 
-    @GetMapping("/seller/register")
+    @PostMapping("/register/seller")
     String saveSeller(@Valid @RequestBody SellerDto sellerDto){
         Seller seller=new Seller();
         if(sellerRepository.findByGst(sellerDto.getGst())== null || sellerRepository.findByCompanyContact(sellerDto.getCompanyContact())== null || sellerRepository.findByCompanyName(sellerDto.getCompanyName())== null){
@@ -71,7 +68,7 @@ public class RegistrationController {
             return "not saved";
     }
 
-    @GetMapping("/seller/verify")
+    @PutMapping("/verify/seller")
     void verifyseller(@RequestParam("token") String toke){
         tokenDao.verifyToken(toke);
 

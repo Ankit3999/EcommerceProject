@@ -38,7 +38,7 @@ public class UserDto {
     @Column(nullable = false)
     @NotEmpty(message = "Password cant be null")
     @Size(min = 8)
-    @ValidPassword
+    //@ValidPassword
     private String password;
 
     private String confirmPassword;

@@ -9,7 +9,7 @@ import java.util.Set;
 @Table
 public class Category {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @UniqueElements
     private String name;
@@ -17,6 +17,21 @@ public class Category {
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private Set<Product> products;
+
+    @ManyToOne
+    @JoinColumn(name = "parentId")
+    private Category parentCategory;
+
+    @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Category> subCategories;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<CategoryMetadataFieldValues> fieldValues;
+
+    Category(String name){
+        this.name=name;
+        parentCategory=null;
+    }
 
     public Set<Product> getProducts() {
         return products;
@@ -26,23 +41,36 @@ public class Category {
         this.products = products;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "parentId")
-    private Category parentCategory;
-
-    @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Category> subCategories;
-
-    Category(){
-        parentCategory=null;
-    }
-
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Category getParentCategory() {
+        return parentCategory;
+    }
+
+    public void setParentCategory(Category parentCategory) {
+        this.parentCategory = parentCategory;
+    }
+
+    public Set<Category> getSubCategories() {
+        return subCategories;
+    }
+
+    public void setSubCategories(Set<Category> subCategories) {
+        this.subCategories = subCategories;
+    }
+
+    public Set<CategoryMetadataFieldValues> getFieldValues() {
+        return fieldValues;
+    }
+
+    public void setFieldValues(Set<CategoryMetadataFieldValues> fieldValues) {
+        this.fieldValues = fieldValues;
     }
 
     public String getName() {

@@ -4,27 +4,24 @@ import javax.persistence.*;
 
 @Entity
 public class CategoryMetadataFieldValues {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
+    @EmbeddedId
+    private CategoryMetadataFieldValuesId id = new CategoryMetadataFieldValuesId();
+
     @Column(name = "field_values")
     private String values;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "categoryId")
+    public CategoryMetadataFieldValues(String values) {
+        this.values = values;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "categoriesId")
     private Category category;
 
-    @OneToOne
-    @JoinColumn(name = "categoryMetadataFieldId")
+    @ManyToOne
+    @JoinColumn(name = "categoryMetaFieldId")
     private CategoryMetadataField categoryMetadataField;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getValues() {
         return values;

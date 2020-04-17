@@ -46,11 +46,29 @@ public class Customer extends User{
     }
 
     public Customer(){
-        Role rolesModel2= new Role();
-        rolesModel2.setRole("CUSTOMER");
-        Set<Role> rolesModels = new HashSet<>();
-        rolesModels.add(rolesModel2);
-        this.setRoles(rolesModels);
+        this.addRole(new Role(1003l, "ROLE_CUSTOMER"));
+    }
+
+    public Customer(String username, String email, String firstName, String middleName, String lastName, Long contact) {
+        super(username, email, firstName, middleName, lastName);
+        //this.addRole(new Role(1003l, "ROLE_CUSTOMER"));
+        this.contact = contact;
+    }
+
+    public Customer(String username, String email, String firstName, String middleName, String lastName, Long contact, List<ProductReview> product_reviews, List<Orders> orders, Cart cart) {
+        super(username, email, firstName, middleName, lastName);
+        this.contact = contact;
+        this.product_reviews = product_reviews;
+        this.orders = orders;
+        this.cart = cart;
+    }
+
+    public Customer(Long ID, String USERNAME, String EMAIL, String FIRST_NAME, String MIDDLE_NAME, String LAST_NAME, String PASSWORD, Boolean IS_DELETED, Boolean IS_ACTIVE, Set<Role> roles, Long contact, List<ProductReview> product_reviews, List<Orders> orders, Cart cart) {
+        super(ID, USERNAME, EMAIL, FIRST_NAME, MIDDLE_NAME, LAST_NAME, PASSWORD, IS_DELETED, IS_ACTIVE, roles);
+        this.contact = contact;
+        this.product_reviews = product_reviews;
+        this.orders = orders;
+        this.cart = cart;
     }
 
     public Long getContact() {

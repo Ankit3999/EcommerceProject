@@ -19,6 +19,18 @@ public class Address {
     @JoinColumn(name = "user_id_address")
     private User user;
 
+    public Address() {
+    }
+
+    public Address(String city, String state, String country, String addressLine, Long zipCode, String label) {
+        this.city = city;
+        this.state = state;
+        this.country = country;
+        this.addressLine = addressLine;
+        this.zipCode = zipCode;
+        this.label = label;
+    }
+
     public User getUser() {
         return user;
     }

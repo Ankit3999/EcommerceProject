@@ -63,7 +63,7 @@ public class CustomerService {
         }
         Address savedAddress = addressOptional.get();
         if(savedAddress.getUser().equals(username)){
-            addressRepository.deleteById(id);
+            addressRepository.deleteAddressById(id);
             return "address deleted";
         }
         return "profile is updated";

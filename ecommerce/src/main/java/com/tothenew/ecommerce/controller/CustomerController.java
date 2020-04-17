@@ -8,6 +8,7 @@ import com.tothenew.ecommerce.entity.Customer;
 import com.tothenew.ecommerce.entity.Product;
 import com.tothenew.ecommerce.repository.CustomerRepository;
 import com.tothenew.ecommerce.repository.ProductRepository;
+import com.tothenew.ecommerce.repository.UserRepository;
 import com.tothenew.ecommerce.services.CurrentUserService;
 import com.tothenew.ecommerce.services.CustomerService;
 import com.tothenew.ecommerce.services.UserService;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +43,9 @@ public class CustomerController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    UserRepository userRepository;
+
     @GetMapping("/customer/home")
     ResponseEntity customerhome(){
         List<Product> productList=new ArrayList<>();
@@ -50,13 +55,15 @@ public class CustomerController {
     }
 
     @GetMapping("/customer/profile")
-    CustomerProfileDto viewprofile(){
+    CustomerProfileDto viewprofile(HttpServletRequest request){
         String username=currentUserService.getUser();
-        Customer customer=customerRepository.findByUsername(username);
+        //System.out.println("username is "+username);
+        Customer customer= (Customer) userRepository.findByEmail(username);
         return customerService.toCustomerViewProfileDto(customer);
+        //return username;
     }
 
-    @GetMapping("/customer/profile/update")
+    @PatchMapping("/customer/profile/update")
     void updateprofile(@RequestBody CustomerDto customerDto){
         userService.updateProfile(customerDto);
     }
@@ -66,26 +73,26 @@ public class CustomerController {
         return userService.getAddress(currentUserService.getUser());
     }
 
-    @GetMapping("/customer/address/add")
+    @PostMapping("/customer/address/add")
     String addAddress(@Valid @RequestBody AddressDto addressDto){
         String username=currentUserService.getUser();
-        Customer customer=customerRepository.findByUsername(username);
+        Customer customer=(Customer) customerRepository.findByEmail(username);
         return customerService.addAddress(customer, addressDto);
     }
 
-    @GetMapping("/customer/address/delete")
+    @DeleteMapping("/customer/address/delete")
     String passwordDelete(@RequestParam("id") Long id){
         String username=currentUserService.getUser();
         return customerService.deleteAddress(id, username);
     }
 
-    @GetMapping("/customer/address/update/{id}")
+    @PutMapping("/customer/address/update/{id}")
     String updateAddress(@Valid @RequestBody AddressDto addressDto, @PathVariable Long id){
         String username=currentUserService.getUser();
         return customerService.updateAddress(id, addressDto, username);
     }
 
-    @GetMapping("/customer/password/update")
+    @PatchMapping("/customer/password/update")
     String updatePassword(@RequestParam("password") String newPassword){
         String username=currentUserService.getUser();
         return customerService.updatePassword(username, newPassword);

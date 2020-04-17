@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 import javax.validation.constraints.Size;
 @Component
 public class SellerProfileDto extends UserProfileDto{
-    @ValidGST
+    //@ValidGST
     @Size(min = 15, max = 15)
-    private Long GST;
+    private String GST;
 
     private String companyName;
 
@@ -21,7 +21,7 @@ public class SellerProfileDto extends UserProfileDto{
     public SellerProfileDto() {
     }
 
-    public SellerProfileDto(Long id, String firstName, String lastName, Boolean isActive, String image, Long GST, Long companyContact, String companyName, AddressDto addressDto) {
+    public SellerProfileDto(Long id, String firstName, String lastName, Boolean isActive, String image, String GST, Long companyContact, String companyName, AddressDto addressDto) {
         super(id, firstName, lastName, isActive, image);
         this.GST=GST;
         this.companyContact=companyContact;
@@ -29,11 +29,11 @@ public class SellerProfileDto extends UserProfileDto{
         this.addressDto=addressDto;
     }
 
-    public Long getGST() {
+    public String getGST() {
         return GST;
     }
 
-    public void setGST(Long GST) {
+    public void setGST(String GST) {
         this.GST = GST;
     }
 

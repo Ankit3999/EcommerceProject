@@ -10,7 +10,7 @@ import java.util.Set;
 @Table(name = "user")
 public class User {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
     @Column(unique=true)
     private String username;
@@ -20,15 +20,17 @@ public class User {
     private String middleName;
     private String lastName;
     private String password;
-    private Boolean isDeleted;
-    private Boolean isActive;
+    private Boolean isDeleted=false;
+    private Boolean isActive=false;
+    private boolean isExpired = false;
+    private boolean isLocked = false;
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="user_role",joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id")
             ,inverseJoinColumns = @JoinColumn(name = "role_id",referencedColumnName = "id"))
     private Set<Role> roles;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Address> addresses;
 
     public Set<Address> getAddresses() {
@@ -39,19 +41,17 @@ public class User {
         this.addresses = addresses;
     }
 
-    public void addAddress(Address address){
-        if(address!=null){
-            if(addresses == null)
-                addresses = new HashSet<Address>();
-
-            System.out.println("address added");
-            address.setUser(this);
-            addresses.add(address);
-        }
-    }
 
     public User(){
-        isActive=false;
+
+    }
+
+    public User(String username, String email, String firstName, String middleName, String lastName) {
+        this.username=username;
+        this.email = email;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
     }
 
     public User(Long ID, String USERNAME, String EMAIL, String FIRST_NAME, String MIDDLE_NAME, String LAST_NAME, String PASSWORD, Boolean IS_DELETED, Boolean IS_ACTIVE, Set<Role> roles) {
@@ -131,12 +131,44 @@ public class User {
         isActive = active;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public boolean isExpired() {
+        return isExpired;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setExpired(boolean expired) {
+        isExpired = expired;
+    }
+
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public void setLocked(boolean locked) {
+        isLocked = locked;
+    }
+
+    public void addAddress(Address address){
+        if(address!=null){
+            if(addresses == null)
+                addresses = new HashSet<Address>();
+
+            System.out.println("address added");
+            address.setUser(this);
+            addresses.add(address);
+        }
+    }
+
+    public void addRole(Role role){
+        if(role!=null){
+            if(roles==null)
+                roles = new HashSet<>();
+
+            roles.add(role);
+        }
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
     }
 
     public String getPassword() {

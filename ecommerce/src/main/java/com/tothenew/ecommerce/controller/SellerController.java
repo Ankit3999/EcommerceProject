@@ -50,23 +50,25 @@ public class SellerController {
 
     @GetMapping("/seller/profile")
     SellerProfileDto viewProfile(){
+        System.out.println("welcome");
         String username=currentUserService.getUser();
-        Seller seller =sellerRepository.findByUsername(username);
+        System.out.println("----------------"+username);
+        Seller seller =(Seller) sellerRepository.findByEmail(username);
         return sellerService.toSellerViewProfileDto(seller);
     }
 
-    @GetMapping("/seller/profile/update")
+    @PatchMapping("/seller/profile/update")
     String updateprofile(@RequestBody SellerDto sellerDto){
         return sellerService.updateProfile(sellerDto);
     }
 
-    @GetMapping("/seller/password/update")
+    @PatchMapping("/seller/password/update")
     String updatePassword(@RequestParam("password") String newPassword){
         String username=currentUserService.getUser();
         return sellerService.updatePassword(username, newPassword);
     }
 
-    @GetMapping("/seller/address/update/{id}")
+    @PutMapping("/seller/address/update/{id}")
     String updateAddress(@Valid @RequestBody AddressDto addressDto, @PathVariable Long id){
         String username=currentUserService.getUser();
         return sellerService.updateAddress(id, addressDto, username);

@@ -1,19 +1,19 @@
 package com.tothenew.ecommerce.entity;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import org.springframework.security.core.GrantedAuthority;
+
+import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Role
-{
+public class Role implements GrantedAuthority {
     @Id
-    @GeneratedValue
-    Long id;
-    String role;
+    private Long id;
+    @Column(unique = true)
+    private String role;
+
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
 
@@ -25,6 +25,12 @@ public class Role
 
     public Role() {
     }
+
+    public Role(Long i, String role) {
+        this.id=i;
+        this.role=role;
+    }
+
 
     public Long getId() {
         return id;
@@ -47,7 +53,15 @@ public class Role
         return users;
     }
 
-    public void setUsers(Set<User> users) {
-        this.users = users;
+    public void addUser(User user){
+        if(users == null)
+            users = new HashSet<>();
+
+        users.add(user);
+    }
+
+    @Override
+    public String getAuthority() {
+        return role;
     }
 }

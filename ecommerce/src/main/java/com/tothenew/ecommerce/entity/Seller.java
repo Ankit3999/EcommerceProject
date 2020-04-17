@@ -11,8 +11,8 @@ import java.util.Set;
 @PrimaryKeyJoinColumn(name = "id")
 public class Seller extends User{
     private Long userId;
-    @ValidGST
-    private Long gst;
+    //@ValidGST
+    private String gst;
     private Long companyContact;
     private String companyName;
 
@@ -20,11 +20,15 @@ public class Seller extends User{
     private Set<Product> products;
 
     public Seller(){
-        Role rolesModel2= new Role();
-        rolesModel2.setRole("SELLER");
-        Set<Role> rolesModels = new HashSet<>();
-        rolesModels.add(rolesModel2);
-        this.setRoles(rolesModels);
+        this.addRole(new Role(1002l, "ROLE_SELLER"));
+    }
+
+    public Seller(String username, String email, String firstName, String middleName, String lastName, String GST, String companyName, Long companyContact) {
+        super(username, email, firstName, middleName, lastName);
+        this.gst = GST;
+        this.companyName = companyName;
+        this.companyContact = companyContact;
+        this.addRole(new Role(1002l, "ROLE_SELLER"));
     }
 
     public Long getUserId() {
@@ -35,11 +39,11 @@ public class Seller extends User{
         this.userId = userId;
     }
 
-    public Long getGst() {
+    public String getGst() {
         return gst;
     }
 
-    public void setGst(Long gst) {
+    public void setGst(String gst) {
         this.gst = gst;
     }
 

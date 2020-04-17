@@ -4,9 +4,7 @@ import com.tothenew.ecommerce.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,7 +17,7 @@ public class LoginController {
     @Autowired
     private TokenStore tokenStore;
 
-    @GetMapping("/doLogout")
+    @PostMapping("/doLogout")
     public String logout(HttpServletRequest request){
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null) {
@@ -35,13 +33,13 @@ public class LoginController {
         return "index";
     }
 
-    @GetMapping("/password/forgot")
+    @PostMapping("/password/forgot")
     String forgotPassword(@RequestParam("email") String email){
         userService.forgotPassword(email);
         return "token sent to email";
     }
 
-    @GetMapping("/password/reset")
+    @PutMapping("/password/reset")
     String resetPassword(@RequestParam("token") String token, @RequestParam("password") String password){
         userService.setPassword(token, password);
         return "password reset successful";

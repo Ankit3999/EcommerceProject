@@ -1,12 +1,17 @@
 package com.tothenew.ecommerce.dao;
 
+import com.tothenew.ecommerce.entity.Address;
+import com.tothenew.ecommerce.entity.Role;
+import com.tothenew.ecommerce.entity.User;
 import com.tothenew.ecommerce.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 public class AppUser implements UserDetails {
@@ -17,18 +22,46 @@ public class AppUser implements UserDetails {
     UserRepository userRepository;
     @Autowired
     UserDao userDao;
+
+    private Long id;
+
     private String username;
+    private String firstName;
+    private String middleName;
+    private String lastName;
     private String password;
-    List<GrantAuthorityImpl> grantAuthorities;
-    public AppUser(String username, String password, List<GrantAuthorityImpl> grantAuthorities) {
-        this.username = username;
-        this.password = password;
-        this.grantAuthorities = grantAuthorities;
+
+    private boolean isDeleted;
+    private boolean isActive;
+    private boolean isExpired;
+    private boolean isLocked;
+
+    private Set<Role> roles;
+
+    private Set<Address> addresses;
+
+    //List<GrantAuthorityImpl> grantAuthorities;
+    public AppUser(User user) {
+        this.id = user.getId();
+        this.username = user.getEmail();
+        this.firstName = user.getFirstName();
+        this.middleName = user.getMiddleName();
+        this.lastName = user.getLastName();
+        this.password = user.getPassword();
+        this.isActive = user.getActive();
+        this.isDeleted = user.getDeleted();
+        this.isExpired = user.isExpired();
+        this.isLocked = user.isLocked();
+
+        this.roles = new HashSet<>(user.getRoles());
+
+        this.addresses = new HashSet<Address>(user.getAddresses());
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        System.out.println("get authorities");
-        return grantAuthorities;
+        /*System.out.println("get authorities");
+        return grantAuthorities;*/
+        return roles;
     }
     @Override
     public String getPassword()
@@ -42,11 +75,11 @@ public class AppUser implements UserDetails {
     }
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return !isExpired;
     }
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return !isLocked;
     }
     @Override
     public boolean isCredentialsNonExpired() {

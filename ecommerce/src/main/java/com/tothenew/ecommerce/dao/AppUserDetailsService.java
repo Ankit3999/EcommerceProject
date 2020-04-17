@@ -14,11 +14,11 @@ public class AppUserDetailsService implements UserDetailsService {
     @Autowired
     UserDao userDao;
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         String encryptedPassword = passwordEncoder.encode("pass");
-        System.out.println("Trying to authenticate user ::" + username);
+        System.out.println("Trying to authenticate user ::" + email);
         System.out.println("Encrypted Password ::"+encryptedPassword);
-        UserDetails userDetails = userDao.loadUserByUsername(username);
+        UserDetails userDetails = userDao.loadUserByUsername(email);
         return userDetails;
     }
 }

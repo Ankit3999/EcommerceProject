@@ -11,8 +11,8 @@ public class SellerDto extends UserDto {
     @NotNull
     @NotEmpty
     @Size(min = 15, max = 15)
-    @ValidGST
-    private Long gst;
+    //@ValidGST
+    private String gst;
     @NotNull
     @NotEmpty
     @Size(min = 10, max = 10)
@@ -24,18 +24,18 @@ public class SellerDto extends UserDto {
     public SellerDto() {
     }
 
-    public SellerDto(String email, String username, String firstName, String middleName, String lastName, String password, String confirmPassword, Long gst, Long companyContact, String companyName){
+    public SellerDto(String email, String username, String firstName, String middleName, String lastName, String password, String confirmPassword, String gst, Long companyContact, String companyName){
         super(email, username, firstName, middleName, lastName, password, confirmPassword);
         this.gst=gst;
         this.companyContact=companyContact;
         this.companyName=companyName;
     }
 
-    public Long getGst() {
+    public String getGst() {
         return gst;
     }
 
-    public void setGst(Long gst) {
+    public void setGst(String gst) {
         this.gst = gst;
     }
 
