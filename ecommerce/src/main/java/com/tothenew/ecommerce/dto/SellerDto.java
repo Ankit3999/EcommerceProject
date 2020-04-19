@@ -1,6 +1,7 @@
 package com.tothenew.ecommerce.dto;
 
 import com.tothenew.ecommerce.validator.ValidGST;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotEmpty;
@@ -14,8 +15,8 @@ public class SellerDto extends UserDto {
     //@ValidGST
     private String gst;
     @NotNull
-    @NotEmpty
-    @Size(min = 10, max = 10)
+    //@NotEmpty
+    //@Range(min = 10, max = 12)
     private Long companyContact;
     @NotNull
     @NotEmpty

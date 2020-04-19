@@ -1,21 +1,24 @@
 package com.tothenew.ecommerce.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tothenew.ecommerce.dto.ProductDto;
 import com.tothenew.ecommerce.dto.ProductVariationDto;
-import com.tothenew.ecommerce.entity.Category;
-import com.tothenew.ecommerce.entity.Product;
-import com.tothenew.ecommerce.entity.ProductVariation;
-import com.tothenew.ecommerce.entity.Seller;
+import com.tothenew.ecommerce.dto.ViewProductDto;
+import com.tothenew.ecommerce.entity.*;
 import com.tothenew.ecommerce.mailing.SendMail;
-import com.tothenew.ecommerce.repository.CategoryRepository;
-import com.tothenew.ecommerce.repository.ProductRepository;
-import com.tothenew.ecommerce.repository.SellerRepository;
+import com.tothenew.ecommerce.repository.*;
+import javassist.NotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.io.File;
+import java.util.*;
 
 @Service
 public class ProductService {
@@ -29,6 +32,16 @@ public class ProductService {
     ModelMapper modelMapper;
     @Autowired
     SendMail sendMail;
+    @Autowired
+    CurrentUserService currentUserService;
+    @Autowired
+    CategoryMetadataFieldValuesRepository categoryMetadataFieldValuesRepository;
+    @Autowired
+    CategoryMetadataFieldRepository categoryMetadataFieldRepository;
+    @Autowired
+    ProductVariationRepository productVariationRepository;
+    @Autowired
+    MessageSource messageSource;
 
     public Product toProduct(ProductDto productDto){
         if(productDto == null)
@@ -235,4 +248,257 @@ public class ProductService {
             product.setCancellable(productDto.getCancellable());
 
     }
+
+    public ViewProductDto viewSingleProductForSeller(Long productId) throws NotFoundException {
+        String sellerEmail= currentUserService.getUser();
+        Seller seller= sellerRepository.findByEmail(sellerEmail);
+        Optional<Product> product=  productRepository.findById(productId);
+        Long[] l = {};
+        if (product.isPresent())
+        {
+            if ((product.get().getSeller().getEmail()).equals(seller.getEmail()))
+            {
+                ViewProductDto viewProductDTO = new ViewProductDto();
+                viewProductDTO.setBrand(product.get().getBrand());
+                viewProductDTO.setActive(product.get().getActive());
+                viewProductDTO.setCancellable(product.get().getCancellable());
+                viewProductDTO.setDescription(product.get().getDescription());
+                viewProductDTO.setProductName(product.get().getName());
+                Optional<Category> category = categoryRepository.findById(productRepository.getCategoryId(productId));
+                viewProductDTO.setProductName(category.get().getName());
+                List<String > fields = new ArrayList<>();
+                List<String > values = new ArrayList<>();
+                List<Long> longList1 = categoryMetadataFieldValuesRepository.getMetadataId(category.get().getId());
+                for (Long l1 : longList1) {
+                    Optional<CategoryMetadataField> categoryMetadataField = categoryMetadataFieldRepository.findById(l1);
+                    fields.add(categoryMetadataField.get().getName());
+                    values.add(categoryMetadataFieldValuesRepository.getFieldValuesForCompositeKey(category.get().getId(), l1));
+                }
+                viewProductDTO.setFieldName(fields);
+                viewProductDTO.setValues(values);
+
+
+                return viewProductDTO;
+            } else {
+                throw new NotFoundException(messageSource.getMessage("Category not found",l, LocaleContextHolder.getLocale()));
+            }
+
+        }
+        else
+        {
+            throw new NotFoundException(messageSource.getMessage("product not found",l,LocaleContextHolder.getLocale()));
+        }
+    }
+
+    public List<ViewProductDto> getProductDetails(Integer pageNo, Integer pageSize, String sortBy) throws NotFoundException {
+        PageRequest paging = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Order.asc(sortBy)));
+        String email = currentUserService.getUser();
+        Seller seller = sellerRepository.findByEmail(email);
+        List<Long> longList = productRepository.getProductIdOfSeller(seller.getId(),paging);
+        List<ViewProductDto> list = new ArrayList<>();
+        for (Long l : longList)
+        {
+            list.add(viewSingleProductForSeller(productRepository.findById(l).get().getId()));
+        }
+        return list;
+    }
+
+    public ViewProductDto viewSingleProductForAdmin(Long productId) throws NotFoundException {
+        Optional<Product> product=  productRepository.findById(productId);
+        if (product.isPresent())
+        {
+            ViewProductDto viewProductDTO = new ViewProductDto();
+            viewProductDTO.setBrand(product.get().getBrand());
+            viewProductDTO.setActive(product.get().getActive());
+            viewProductDTO.setCancellable(product.get().getCancellable());
+            viewProductDTO.setDescription(product.get().getDescription());
+            viewProductDTO.setProductName(product.get().getName());
+            Optional<Category> category = categoryRepository.findById(productRepository.getCategoryId(productId));
+            viewProductDTO.setName(category.get().getName());
+            List<String > fields = new ArrayList<>();
+            List<String > values = new ArrayList<>();
+            List<Long> longList1 = categoryMetadataFieldValuesRepository.getMetadataId(category.get().getId());
+            for (Long l1 : longList1) {
+                Optional<CategoryMetadataField> categoryMetadataField = categoryMetadataFieldRepository.findById(l1);
+                fields.add(categoryMetadataField.get().getName());
+                values.add(categoryMetadataFieldValuesRepository.getFieldValuesForCompositeKey(category.get().getId(), l1));
+            }
+            viewProductDTO.setFieldName(fields);
+            viewProductDTO.setValues(values);
+            List<String > list = new ArrayList<>();
+            Set<ProductVariation> productVariations = product.get().getVariations();
+            String firstPath = System.getProperty("user.dir");
+            String fileBasePath = firstPath+"/src/main/resources/productVariation/";
+            for (ProductVariation productVariation : productVariations)
+            {
+                File dir = new File(fileBasePath);
+                if (dir.isDirectory())
+                {
+                    File[] files = dir.listFiles();
+                    for (File file1 : files) {
+                        String value = productVariation.getId().toString()+"_0";
+                        if (file1.getName().startsWith(value)) {
+                            list.add("http://localhost:8080/viewProductVariationImage/"+file1.getName());
+                        }
+                    }
+                }
+            }
+            viewProductDTO.setLinks(list);
+
+            return viewProductDTO;
+        }
+
+        else {
+            Long[] l = {};
+            throw new NotFoundException(messageSource.getMessage("notfound.txt",l,LocaleContextHolder.getLocale()));
+        }
+    }
+
+    public List<ViewProductDto> getProductDetailsForAdmin(Integer pageNo, Integer pageSize, String sortBy) throws NotFoundException {
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Order.asc(sortBy)));
+        List<Long> longList = productRepository.getAllId(paging);
+        System.out.println(longList);
+        List<ViewProductDto> list = new ArrayList<>();
+        for (Long l : longList)
+        {
+            System.out.println(productRepository.findById(l).get().getName());
+            list.add(viewSingleProductForAdmin(productRepository.findById(l).get().getId()));
+
+        }
+        return list;
+    }
+
+    public ViewProductDto viewSingleProductForCustomer(Long productId) throws NotFoundException {
+        Optional<Product> product=  productRepository.findById(productId);
+        if (product.isPresent()&&product.get().getActive()==true&&product.get().getVariations().isEmpty()==false)
+        {
+            ViewProductDto viewProductDTO = new ViewProductDto();
+            viewProductDTO.setBrand(product.get().getBrand());
+            viewProductDTO.setActive(product.get().getActive());
+            viewProductDTO.setCancellable(product.get().getCancellable());
+            viewProductDTO.setDescription(product.get().getDescription());
+            viewProductDTO.setProductName(product.get().getName());
+            Optional<Category> category = categoryRepository.findById(productRepository.getCategoryId(productId));
+            viewProductDTO.setName(category.get().getName());
+            List<String > fields = new ArrayList<>();
+            List<String > values = new ArrayList<>();
+            List<Long> longList1 = categoryMetadataFieldValuesRepository.getMetadataId(category.get().getId());
+            for (Long l1 : longList1) {
+                Optional<CategoryMetadataField> categoryMetadataField = categoryMetadataFieldRepository.findById(l1);
+                fields.add(categoryMetadataField.get().getName());
+                values.add(categoryMetadataFieldValuesRepository.getFieldValuesForCompositeKey(category.get().getId(), l1));
+            }
+            viewProductDTO.setFieldName(fields);
+            viewProductDTO.setValues(values);
+            List<String > list = new ArrayList<>();
+            Set<ProductVariation> productVariations = product.get().getVariations();
+            String firstPath = System.getProperty("user.dir");
+            String fileBasePath = firstPath+"/src/main/resources/productVariation/";
+            for (ProductVariation productVariation : productVariations)
+            {
+                File dir = new File(fileBasePath);
+                if (dir.isDirectory())
+                {
+                    File[] files = dir.listFiles();
+                    for (File file1 : files) {
+                        String value = productVariation.getId().toString()+"_0";
+                        if (file1.getName().startsWith(value)) {
+                            list.add("http://localhost:8080/viewProductVariationImage/"+file1.getName());
+                        }
+                    }
+                }
+            }
+            viewProductDTO.setLinks(list);
+            return viewProductDTO;
+        }
+        else {
+            Long[] l = {};
+            throw new NotFoundException(messageSource.getMessage("notfound.txt",l,LocaleContextHolder.getLocale()));
+        }
+
+    }
+
+    public List<ViewProductDto> getProductDetailsForCustomer(Long categoryId, Integer pageNo, Integer pageSize, String sortBy) throws NotFoundException {
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Order.asc(sortBy)));
+        Optional<Category> category = categoryRepository.findById(categoryId);
+        List<ViewProductDto> list = new ArrayList<>();
+        if (category.isPresent() && category.get().getSubCategories()==null)
+        {
+            List<Long> longList = productRepository.getIdsOfProducts(categoryId, paging);
+            System.out.println(longList);
+            for (Long l : longList)
+            {
+                list.add(viewSingleProductForCustomer(productRepository.findById(l).get().getId()));
+
+            }
+            return list;
+        }
+        else
+        {
+            Long[] l = {};
+            throw new NotFoundException(messageSource.getMessage("not found",l,LocaleContextHolder.getLocale()));
+        }
+
+    }
+
+    public List<ViewProductDto> getSimilarProducts(Long productId, Integer offset, Integer size, String sortByField) throws NotFoundException {
+        Optional<Product> product = productRepository.findById(productId);
+        Long[] l1 = {};
+        Pageable paging = PageRequest.of(offset, size, Sort.by(Sort.Order.asc(sortByField)));
+        List<ViewProductDto> list = new ArrayList<>();
+
+        if (product.isPresent())
+        {
+            List<Long> longList = productRepository.getIdOfSimilarProduct(product.get().getCategory().getId(),product.get().getBrand(),paging);
+            System.out.println(longList);
+            for (Long l : longList)
+            {
+                list.add(viewSingleProductForCustomer(productRepository.findById(l).get().getId()));
+            }
+            return list;
+        }
+        else
+            throw new NotFoundException(messageSource.getMessage("not found",l1,LocaleContextHolder.getLocale()));
+    }
+/*
+    public ProductVariationDto getSingleProductVariation(Long productVariationId) throws JsonProcessingException, NotFoundException {
+        Long[] l = {};
+        String email = currentUserService.getUser();
+        Seller seller = sellerRepository.findByEmail(email);
+        Optional<ProductVariation> productVariation = productVariationRepository.findById(productVariationId);
+        if (productVariation.isPresent())
+        {
+            Product product = productVariation.get().getProduct();
+            if (product.getSeller().getUsername().equals(seller.getUsername())&&product!=null)
+            {
+                ProductVariationDto productVariationDTO = new ProductVariationDto();
+                productVariationDTO.setName(product.getName());
+                productVariationDTO.setBrand(product.getBrand());
+                productVariationDTO.setCancellable(product.getCancellable());
+                productVariationDTO.setActive(product.getActive());
+                productVariationDTO.setDescription(product.getDescription());
+                productVariationDTO.setReturnable(product.getReturnable());
+                Map<String ,Object> map = objectMapper.readValue(productVariation.get().getInfoJson(), HashMap.class);
+                List<String > field = new ArrayList<>();
+                List<String > values = new ArrayList<>();
+                for (Map.Entry m : map.entrySet())
+                {
+                    field.add(m.getKey().toString());
+                    values.add(m.getValue().toString());
+                }
+                productVariationDTO.setField(field);
+                productVariationDTO.setValues(values);
+                productVariationDTO.setPrice(productVariation.get().getPrice());
+                productVariationDTO.setQuantityAvailable(productVariation.get().getQuantityAvailable());
+                return productVariationDTO;
+            }
+            else
+            {
+                throw  new NotFoundException(messageSource.getMessage("not found",l, LocaleContextHolder.getLocale()));
+            }
+        }
+        else {
+            throw new NotFoundException(messageSource.getMessage("no variation found",l,LocaleContextHolder.getLocale()));
+        }
+    }*/
 }

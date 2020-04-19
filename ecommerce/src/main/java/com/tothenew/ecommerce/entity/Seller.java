@@ -1,6 +1,7 @@
 package com.tothenew.ecommerce.entity;
 
 import com.tothenew.ecommerce.validator.ValidGST;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -13,6 +14,7 @@ public class Seller extends User{
     private Long userId;
     //@ValidGST
     private String gst;
+    //@Range(min = 10, max = 12)
     private Long companyContact;
     private String companyName;
 

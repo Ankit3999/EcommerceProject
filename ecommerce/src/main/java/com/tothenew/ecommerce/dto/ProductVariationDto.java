@@ -3,12 +3,10 @@ package com.tothenew.ecommerce.dto;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Component
-public class ProductVariationDto {
+public class ProductVariationDto extends ProductDto{
     private Long id;
 
     @NotNull
@@ -16,6 +14,8 @@ public class ProductVariationDto {
     private Integer quantityAvailable;
     private Double price;
     private Set<String> images;
+    List<String> field = new ArrayList<>();
+    List<String> values = new ArrayList<>();
 
     @NotNull
     private Map<String, String> attributes = new LinkedHashMap<>();
@@ -89,5 +89,21 @@ public class ProductVariationDto {
 
     public void setProductDto(ProductDto productDto) {
         this.productDto = productDto;
+    }
+
+    public List<String> getField() {
+        return field;
+    }
+
+    public void setField(List<String> field) {
+        this.field = field;
+    }
+
+    public List<String> getValues() {
+        return values;
+    }
+
+    public void setValues(List<String> values) {
+        this.values = values;
     }
 }

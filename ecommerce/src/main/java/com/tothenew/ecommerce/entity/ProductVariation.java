@@ -11,8 +11,8 @@ public class ProductVariation {
     @GeneratedValue
     private Long id;
     private Long productId;
-    private Long quantityAvailable;
-    private Long price;
+    private Integer quantityAvailable;
+    private Double price;
     private String metadata;
     private String primaryImageName;
 
@@ -67,11 +67,11 @@ PRIMARY_IMAGE_NAME*/
         this.productId = productId;
     }
 
-    public Long getQuantityAvailable() {
+    public Integer getQuantityAvailable() {
         return quantityAvailable;
     }
 
-    public void setQuantityAvailable(Long quantityAvailable) {
+    public void setQuantityAvailable(Integer quantityAvailable) {
         this.quantityAvailable = quantityAvailable;
     }
 
@@ -83,11 +83,11 @@ PRIMARY_IMAGE_NAME*/
         this.id = id;
     }
 
-    public Long getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

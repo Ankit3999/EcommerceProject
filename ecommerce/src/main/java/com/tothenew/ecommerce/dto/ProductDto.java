@@ -17,11 +17,12 @@ public class ProductDto {
     private String description;
     private Boolean isReturnable = false;
     private Boolean isCancellable = false;
+    private boolean isActive=false;
 
     public ProductDto() {
     }
 
-    public ProductDto(Long id, @NotNull String name, @NotNull String brand, @NotNull Long categoryId, CategoryDto categoryDto, String description, Boolean isReturnable, Boolean isCancellable) {
+    public ProductDto(Long id, @NotNull String name, @NotNull String brand, @NotNull Long categoryId, CategoryDto categoryDto, String description, Boolean isReturnable, Boolean isCancellable, Boolean isActive) {
         this.id = id;
         this.name = name;
         this.brand = brand;
@@ -30,6 +31,7 @@ public class ProductDto {
         this.description = description;
         this.isReturnable = isReturnable;
         this.isCancellable = isCancellable;
+        this.isActive=isActive;
     }
 
     public Long getId() {
@@ -94,5 +96,13 @@ public class ProductDto {
 
     public void setCancellable(Boolean cancellable) {
         isCancellable = cancellable;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }

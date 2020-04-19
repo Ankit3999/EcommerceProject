@@ -1,5 +1,7 @@
 package com.tothenew.ecommerce.controller;
 
+import com.tothenew.ecommerce.dao.CustomerImageDao;
+import com.tothenew.ecommerce.dao.SellerImageDao;
 import com.tothenew.ecommerce.dao.TokenDao;
 import com.tothenew.ecommerce.dto.CustomerDto;
 import com.tothenew.ecommerce.dto.SellerDto;
@@ -12,9 +14,13 @@ import com.tothenew.ecommerce.repository.SellerRepository;
 import com.tothenew.ecommerce.services.CustomerService;
 import com.tothenew.ecommerce.services.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
+
 @RestController
 public class RegistrationController {
     @Autowired
@@ -27,6 +33,10 @@ public class RegistrationController {
     @Autowired
     SellerService sellerService;
 
+    @Autowired
+    CustomerImageDao customerImageDao;
+    @Autowired
+    SellerImageDao sellerImageDao;
 
     @Autowired
     MailVerification mailVerification;
@@ -48,6 +58,10 @@ public class RegistrationController {
             throw new EmailAlreadyExistsException("Customer of this email already exist");
 
     }
+  /*  @PostMapping("/register/upload/image")
+    ResponseEntity<Object> uploadImage(@Valid MultipartFile file, Customer customer) throws IOException {
+        return customerImageDao.uploadSingleImage(file, customer);
+    }*/
 
     @PutMapping("/verify/customer")
     void verifycustomer(@RequestParam("token") String toke){
@@ -67,6 +81,11 @@ public class RegistrationController {
         else
             return "not saved";
     }
+
+    /*@PostMapping("/register/upload/image")
+    ResponseEntity<Object> uploadImage(@Valid MultipartFile file, Seller seller) throws IOException {
+        return sellerImageDao.uploadSingleImage(file, seller);
+    }*/
 
     @PutMapping("/verify/seller")
     void verifyseller(@RequestParam("token") String toke){
