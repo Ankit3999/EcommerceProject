@@ -1,8 +1,10 @@
 package com.tothenew.ecommerce.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tothenew.ecommerce.services.HashMapConverter;
 
 import javax.persistence.*;
+import java.util.Map;
 
 @Entity
 @Table
@@ -15,6 +17,10 @@ public class ProductVariation {
     private Double price;
     private String metadata;
     private String primaryImageName;
+    private String infoJson;
+
+    @Convert(converter = HashMapConverter.class)
+    private Map<String,Object> infoAttributes;
 
     @JsonIgnore
     @ManyToOne
@@ -34,6 +40,22 @@ public class ProductVariation {
 (Note: will contain all the information regarding variations in JSON format)
 (All variations of same category will have a fixed similar JSON structure)"
 PRIMARY_IMAGE_NAME*/
+
+    public String getInfoJson() {
+        return infoJson;
+    }
+
+    public void setInfoJson(String infoJson) {
+        this.infoJson = infoJson;
+    }
+
+    public Map<String, Object> getInfoAttributes() {
+        return infoAttributes;
+    }
+
+    public void setInfoAttributes(Map<String, Object> infoAttributes) {
+        this.infoAttributes = infoAttributes;
+    }
 
     public Cart getCart() {
         return cart;

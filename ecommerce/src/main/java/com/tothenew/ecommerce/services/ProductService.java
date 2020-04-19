@@ -8,6 +8,7 @@ import com.tothenew.ecommerce.entity.*;
 import com.tothenew.ecommerce.mailing.SendMail;
 import com.tothenew.ecommerce.repository.*;
 import javassist.NotFoundException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -42,6 +44,8 @@ public class ProductService {
     ProductVariationRepository productVariationRepository;
     @Autowired
     MessageSource messageSource;
+    @Autowired
+    ObjectMapper objectMapper;
 
     public Product toProduct(ProductDto productDto){
         if(productDto == null)
@@ -460,8 +464,8 @@ public class ProductService {
         else
             throw new NotFoundException(messageSource.getMessage("not found",l1,LocaleContextHolder.getLocale()));
     }
-/*
-    public ProductVariationDto getSingleProductVariation(Long productVariationId) throws JsonProcessingException, NotFoundException {
+
+    public ProductVariationDto getSingleProductVariation(Long productVariationId) throws IOException, NotFoundException {
         Long[] l = {};
         String email = currentUserService.getUser();
         Seller seller = sellerRepository.findByEmail(email);
@@ -500,5 +504,5 @@ public class ProductService {
         else {
             throw new NotFoundException(messageSource.getMessage("no variation found",l,LocaleContextHolder.getLocale()));
         }
-    }*/
+    }
 }
