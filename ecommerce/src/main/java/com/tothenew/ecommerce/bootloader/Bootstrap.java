@@ -59,7 +59,7 @@ public class Bootstrap implements ApplicationRunner
             seller1.addAddress(new Address("kanpur", "UP", "india", "fg95", 2342342l, "home"));
             seller1.setActive(true);
 
-           // userRepository.save(seller1);
+            userRepository.save(seller1);
 
             System.out.println("Total users saved::"+userRepository.count());
 
