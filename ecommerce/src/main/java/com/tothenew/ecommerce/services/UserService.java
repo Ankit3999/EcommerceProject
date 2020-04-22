@@ -160,13 +160,13 @@ public class UserService {
     }
 
     public Set<Address> getAddress(String userName){
-        User user=userRepository.findByUsername(userName);
+        User user=userRepository.findByEmail(userName);
         return user.getAddresses();
     }
 
     public String updateProfile(CustomerDto customer){
         String username=currentUserService.getUser();
-        Customer customer1=customerRepository.findByUsername(username);
+        Customer customer1=customerRepository.findByEmail(username);
         if (customer.getFirstName()!=null)
             customer1.setFirstName(customer.getFirstName());
         if (customer.getMiddleName()!=null)

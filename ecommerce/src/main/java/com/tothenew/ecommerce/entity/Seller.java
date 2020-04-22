@@ -72,5 +72,16 @@ public class Seller extends User{
     public void setProducts(Set<Product> products) {
         this.products = products;
     }
+
+    public void addProduct(Product product){
+        if(product != null){
+            if(products == null)
+                products = new HashSet<Product>();
+
+            products.add(product);
+
+            product.setSeller(this);
+        }
+    }
 }
 

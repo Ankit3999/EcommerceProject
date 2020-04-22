@@ -33,7 +33,7 @@ public class LoginController {
         return "index";
     }
 
-    @PostMapping("/password/forgot")
+    @PutMapping("/password/forgot")
     String forgotPassword(@RequestParam("email") String email){
         userService.forgotPassword(email);
         return "token sent to email";

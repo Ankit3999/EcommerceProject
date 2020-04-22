@@ -19,6 +19,13 @@ public class ProductReview {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    public ProductReview(String review, String rating) {
+        this.review = review;
+        this.rating = rating;
+    }
+
+    public ProductReview() {
+    }
 
     public Customer getCustomer() {
         return customer;

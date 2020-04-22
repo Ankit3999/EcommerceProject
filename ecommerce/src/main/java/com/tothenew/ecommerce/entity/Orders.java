@@ -1,6 +1,8 @@
 package com.tothenew.ecommerce.entity;
 
 import javax.persistence.*;
+import java.util.Date;
+import java.util.HashSet;
 
 @Entity
 @Table(name = "orders")
@@ -9,7 +11,8 @@ public class Orders {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ids;
     private Long amountPaid;
-    private String dateCreated;
+    @Temporal(TemporalType.DATE)
+    private Date dateCreated;
     private String paymentMethod;
 /*    private String CUSTOMER_ADDRESS_CITY;
     private String CUSTOMER_ADDRESS_STATE;
@@ -68,11 +71,11 @@ public class Orders {
         this.amountPaid = amountPaid;
     }
 
-    public String getDateCreated() {
+    public Date getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(String dateCreated) {
+    public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
     }
 
@@ -83,6 +86,7 @@ public class Orders {
     public void setPaymentMethod(String paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
+
 
 
     /*ID

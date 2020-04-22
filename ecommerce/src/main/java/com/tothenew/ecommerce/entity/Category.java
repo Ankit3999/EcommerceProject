@@ -3,6 +3,7 @@ package com.tothenew.ecommerce.entity;
 import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -11,7 +12,7 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @UniqueElements
+    @Column(unique=true)
     private String name;
     //private Long parentId;
 
@@ -28,9 +29,12 @@ public class Category {
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<CategoryMetadataFieldValues> fieldValues;
 
-    Category(String name){
+    public Category(String name){
         this.name=name;
         parentCategory=null;
+    }
+
+    public Category() {
     }
 
     public Set<Product> getProducts() {
@@ -79,6 +83,27 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void addSubCategory(Category category){
+        if(category != null){
+            if(subCategories == null)
+                subCategories = new HashSet<>();
+
+            subCategories.add(category);
+            category.setParentCategory(this);
+        }
+    }
+
+    public void addProduct(Product product){
+        if(product != null){
+            if(products == null)
+                products = new HashSet<Product>();
+
+            products.add(product);
+
+            product.setCategory(this);
+        }
     }
 
 }

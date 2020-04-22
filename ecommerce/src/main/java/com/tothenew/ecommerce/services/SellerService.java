@@ -46,7 +46,7 @@ public class SellerService {
 
     public String updateProfile(SellerDto sellerDto){
         String username=currentUserService.getUser();
-        Seller seller=sellerRepository.findByUsername(username);
+        Seller seller=sellerRepository.findByEmail(username);
         if (sellerDto.getFirstName()!=null)
             seller.setFirstName(sellerDto.getFirstName());
         if (sellerDto.getMiddleName()!=null)
@@ -73,7 +73,7 @@ public class SellerService {
     }
 
     public String updatePassword(String username, String newPassword) {
-        Seller seller=sellerRepository.findByUsername(username);
+        Seller seller=sellerRepository.findByEmail(username);
         seller.setPassword(passwordEncoder.encode(newPassword));
         sellerRepository.save(seller);
         sendMail.sendPasswordResetConfirmationMail(seller.getEmail());

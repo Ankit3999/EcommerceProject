@@ -1,3 +1,4 @@
+/*
 package com.tothenew.ecommerce.event;
 
 import com.tothenew.ecommerce.entity.User;
@@ -69,7 +70,6 @@ public class CustomEventListener
             LinkedHashMap<String ,String > hashMap = (LinkedHashMap<String, String>) event.getAuthentication().getDetails();
             Iterable<UserAttempts> userAttempts = userAttemptsRepository.findAll();
 
-
             for (UserAttempts userAttempts1 : userAttempts)
             {
                 if (userAttempts1.getEmail().equals(hashMap.get("username")))
@@ -83,4 +83,4 @@ public class CustomEventListener
 
         }
     }
-}
+}*/

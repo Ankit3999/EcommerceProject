@@ -1,6 +1,5 @@
 package com.tothenew.ecommerce.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tothenew.ecommerce.dto.ProductDto;
 import com.tothenew.ecommerce.dto.ProductVariationDto;
 import com.tothenew.ecommerce.dto.ViewProductDto;
@@ -18,8 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -75,7 +72,7 @@ public class ProductService {
     public String addProduct(String email, ProductDto productDto){
         String message=validateProduct(email, productDto);
         if(!message.equalsIgnoreCase("success")){
-            return "validation failed";
+            return message;
         }
         Category category=categoryRepository.findById(productDto.getCategoryId()).get();
         Product product=toProduct(productDto);
@@ -99,25 +96,17 @@ public class ProductService {
     }
 
     private String validateProduct(String email, ProductDto productDto) {
-        String message;
+        String message="success";
         Optional<Category> savedCategory=categoryRepository.findById(productDto.getCategoryId());
         if(!savedCategory.isPresent()){
             message="category doesn't exist";
-            return message;
         }
         Category category=savedCategory.get();
         if(!(category.getSubCategories()==null || category.getSubCategories().isEmpty())){
             message="not a leaf category";
-            return message;
         }
         Product product=productRepository.findByName(productDto.getName());
-        if(product.getCategory().getId().equals(productDto.getCategoryId())){
-            if(product.getSeller().getEmail().equals(email)){
-                message="this product already exist";
-                return message;
-            }
-        }
-        message="success";
+       // message="success";
         return message;
     }
 
@@ -167,21 +156,21 @@ public class ProductService {
         sendMail.sendEmail(email, subject, content);
     }
 
-    public Object getProduct(Long id, String email) {
+    public ProductDto getProduct(Long id, String email) {
         String message;
         Optional<Product> productOptional=productRepository.findById(id);
         if(!productOptional.isPresent()){
             message="product not found";
-            return message;
+            //return message;
         }
         Product product=productOptional.get();
         if(!product.getSeller().getEmail().equalsIgnoreCase(email)){
             message="product does not belong to this user";
-            return message;
+            //return message;
         }
         if(product.getDeleted()){
             message="product not found";
-            return message;
+            //return message;
         }
         ProductDto productDto=toProductDto(product);
         return productDto;
@@ -263,6 +252,7 @@ public class ProductService {
             if ((product.get().getSeller().getEmail()).equals(seller.getEmail()))
             {
                 ViewProductDto viewProductDTO = new ViewProductDto();
+                viewProductDTO.setId(product.get().getId());
                 viewProductDTO.setBrand(product.get().getBrand());
                 viewProductDTO.setActive(product.get().getActive());
                 viewProductDTO.setCancellable(product.get().getCancellable());
@@ -270,17 +260,6 @@ public class ProductService {
                 viewProductDTO.setProductName(product.get().getName());
                 Optional<Category> category = categoryRepository.findById(productRepository.getCategoryId(productId));
                 viewProductDTO.setProductName(category.get().getName());
-                List<String > fields = new ArrayList<>();
-                List<String > values = new ArrayList<>();
-                List<Long> longList1 = categoryMetadataFieldValuesRepository.getMetadataId(category.get().getId());
-                for (Long l1 : longList1) {
-                    Optional<CategoryMetadataField> categoryMetadataField = categoryMetadataFieldRepository.findById(l1);
-                    fields.add(categoryMetadataField.get().getName());
-                    values.add(categoryMetadataFieldValuesRepository.getFieldValuesForCompositeKey(category.get().getId(), l1));
-                }
-                viewProductDTO.setFieldName(fields);
-                viewProductDTO.setValues(values);
-
 
                 return viewProductDTO;
             } else {
@@ -319,35 +298,6 @@ public class ProductService {
             viewProductDTO.setProductName(product.get().getName());
             Optional<Category> category = categoryRepository.findById(productRepository.getCategoryId(productId));
             viewProductDTO.setName(category.get().getName());
-            List<String > fields = new ArrayList<>();
-            List<String > values = new ArrayList<>();
-            List<Long> longList1 = categoryMetadataFieldValuesRepository.getMetadataId(category.get().getId());
-            for (Long l1 : longList1) {
-                Optional<CategoryMetadataField> categoryMetadataField = categoryMetadataFieldRepository.findById(l1);
-                fields.add(categoryMetadataField.get().getName());
-                values.add(categoryMetadataFieldValuesRepository.getFieldValuesForCompositeKey(category.get().getId(), l1));
-            }
-            viewProductDTO.setFieldName(fields);
-            viewProductDTO.setValues(values);
-            List<String > list = new ArrayList<>();
-            Set<ProductVariation> productVariations = product.get().getVariations();
-            String firstPath = System.getProperty("user.dir");
-            String fileBasePath = firstPath+"/src/main/resources/productVariation/";
-            for (ProductVariation productVariation : productVariations)
-            {
-                File dir = new File(fileBasePath);
-                if (dir.isDirectory())
-                {
-                    File[] files = dir.listFiles();
-                    for (File file1 : files) {
-                        String value = productVariation.getId().toString()+"_0";
-                        if (file1.getName().startsWith(value)) {
-                            list.add("http://localhost:8080/viewProductVariationImage/"+file1.getName());
-                        }
-                    }
-                }
-            }
-            viewProductDTO.setLinks(list);
 
             return viewProductDTO;
         }
@@ -384,35 +334,10 @@ public class ProductService {
             viewProductDTO.setProductName(product.get().getName());
             Optional<Category> category = categoryRepository.findById(productRepository.getCategoryId(productId));
             viewProductDTO.setName(category.get().getName());
-            List<String > fields = new ArrayList<>();
-            List<String > values = new ArrayList<>();
-            List<Long> longList1 = categoryMetadataFieldValuesRepository.getMetadataId(category.get().getId());
-            for (Long l1 : longList1) {
-                Optional<CategoryMetadataField> categoryMetadataField = categoryMetadataFieldRepository.findById(l1);
-                fields.add(categoryMetadataField.get().getName());
-                values.add(categoryMetadataFieldValuesRepository.getFieldValuesForCompositeKey(category.get().getId(), l1));
-            }
-            viewProductDTO.setFieldName(fields);
-            viewProductDTO.setValues(values);
-            List<String > list = new ArrayList<>();
+
             Set<ProductVariation> productVariations = product.get().getVariations();
             String firstPath = System.getProperty("user.dir");
             String fileBasePath = firstPath+"/src/main/resources/productVariation/";
-            for (ProductVariation productVariation : productVariations)
-            {
-                File dir = new File(fileBasePath);
-                if (dir.isDirectory())
-                {
-                    File[] files = dir.listFiles();
-                    for (File file1 : files) {
-                        String value = productVariation.getId().toString()+"_0";
-                        if (file1.getName().startsWith(value)) {
-                            list.add("http://localhost:8080/viewProductVariationImage/"+file1.getName());
-                        }
-                    }
-                }
-            }
-            viewProductDTO.setLinks(list);
             return viewProductDTO;
         }
         else {
@@ -465,44 +390,5 @@ public class ProductService {
             throw new NotFoundException(messageSource.getMessage("not found",l1,LocaleContextHolder.getLocale()));
     }
 
-    public ProductVariationDto getSingleProductVariation(Long productVariationId) throws IOException, NotFoundException {
-        Long[] l = {};
-        String email = currentUserService.getUser();
-        Seller seller = sellerRepository.findByEmail(email);
-        Optional<ProductVariation> productVariation = productVariationRepository.findById(productVariationId);
-        if (productVariation.isPresent())
-        {
-            Product product = productVariation.get().getProduct();
-            if (product.getSeller().getUsername().equals(seller.getUsername())&&product!=null)
-            {
-                ProductVariationDto productVariationDTO = new ProductVariationDto();
-                productVariationDTO.setName(product.getName());
-                productVariationDTO.setBrand(product.getBrand());
-                productVariationDTO.setCancellable(product.getCancellable());
-                productVariationDTO.setActive(product.getActive());
-                productVariationDTO.setDescription(product.getDescription());
-                productVariationDTO.setReturnable(product.getReturnable());
-                Map<String ,Object> map = objectMapper.readValue(productVariation.get().getInfoJson(), HashMap.class);
-                List<String > field = new ArrayList<>();
-                List<String > values = new ArrayList<>();
-                for (Map.Entry m : map.entrySet())
-                {
-                    field.add(m.getKey().toString());
-                    values.add(m.getValue().toString());
-                }
-                productVariationDTO.setField(field);
-                productVariationDTO.setValues(values);
-                productVariationDTO.setPrice(productVariation.get().getPrice());
-                productVariationDTO.setQuantityAvailable(productVariation.get().getQuantityAvailable());
-                return productVariationDTO;
-            }
-            else
-            {
-                throw  new NotFoundException(messageSource.getMessage("not found",l, LocaleContextHolder.getLocale()));
-            }
-        }
-        else {
-            throw new NotFoundException(messageSource.getMessage("no variation found",l,LocaleContextHolder.getLocale()));
-        }
-    }
+
 }

@@ -41,6 +41,14 @@ public class ProductVariation {
 (All variations of same category will have a fixed similar JSON structure)"
 PRIMARY_IMAGE_NAME*/
 
+    public ProductVariation(Integer quantityAvailable, Double price) {
+        this.quantityAvailable = quantityAvailable;
+        this.price = price;
+    }
+
+    public ProductVariation() {
+    }
+
     public String getInfoJson() {
         return infoJson;
     }

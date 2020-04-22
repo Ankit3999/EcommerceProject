@@ -14,12 +14,10 @@ import com.tothenew.ecommerce.repository.SellerRepository;
 import com.tothenew.ecommerce.services.CustomerService;
 import com.tothenew.ecommerce.services.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.IOException;
 
 @RestController
 public class RegistrationController {
@@ -43,13 +41,15 @@ public class RegistrationController {
 
     @Autowired
     TokenDao tokenDao;
-
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @PostMapping("/register/customer")
     String saveCustomer(@Valid @RequestBody CustomerDto customerDto){
         if(customerRepository.findByEmail(customerDto.getEmail())==null) {
             Customer customer=new Customer();
             customer = customerService.convtToCustomer(customerDto);
+            customer.setPassword(passwordEncoder.encode(customer.getPassword()));
             mailVerification.sendNotificaitoin(customer);
             customerRepository.save(customer);
             return "Success";
@@ -64,16 +64,19 @@ public class RegistrationController {
     }*/
 
     @PutMapping("/verify/customer")
-    void verifycustomer(@RequestParam("token") String toke){
+    String verifycustomer(@RequestParam("token") String toke){
         tokenDao.verifyToken(toke);
+        return "success";
 
     }
 
     @PostMapping("/register/seller")
     String saveSeller(@Valid @RequestBody SellerDto sellerDto){
-        Seller seller=new Seller();
         if(sellerRepository.findByGst(sellerDto.getGst())== null || sellerRepository.findByCompanyContact(sellerDto.getCompanyContact())== null || sellerRepository.findByCompanyName(sellerDto.getCompanyName())== null){
+            Seller seller=new Seller();
             seller= sellerService.convtToSeller(sellerDto);
+            seller.setPassword(passwordEncoder.encode(seller.getPassword()));
+            mailVerification.sendNotificaitoin(seller);
             sellerRepository.save(seller);
             return "Success";
         }

@@ -3,6 +3,7 @@ package com.tothenew.ecommerce.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.HashSet;
 
 @Entity
 @Table
@@ -72,6 +73,8 @@ public class OrderProduct {
     public void setProductVariationMetadata(Long productVariationMetadata) {
         this.productVariationMetadata = productVariationMetadata;
     }
+
+
 
    /*ID
 ORDER_ID

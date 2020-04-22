@@ -1,6 +1,9 @@
 package com.tothenew.ecommerce.entity;
 
+import org.springframework.data.repository.cdi.Eager;
+
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,6 +46,16 @@ public class Customer extends User{
 
     public void setProduct_reviews(List<ProductReview> product_reviews) {
         this.product_reviews = product_reviews;
+    }
+
+    public void addReview(ProductReview review){
+        if(review != null){
+            if(product_reviews == null)
+                product_reviews = new ArrayList<>();
+
+            product_reviews.add(review);
+            review.setCustomer(this);
+        }
     }
 
     public Customer(){

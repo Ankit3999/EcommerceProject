@@ -12,6 +12,6 @@ public interface AddressRepository extends CrudRepository<Address, Long> {
 
     @Modifying
     @Transactional
-    @Query("delete from Address where id= :Id")
-    void deleteAddressById(@Param("Id") Long Id);
+    @Query("delete from Address where id= :id")
+    void deleteAddressById(@Param("id") Long id);
 }

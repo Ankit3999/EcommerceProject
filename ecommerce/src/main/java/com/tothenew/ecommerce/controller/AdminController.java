@@ -50,8 +50,9 @@ public class AdminController {
     }
 
     @GetMapping("/admin/activate")
-    public void activateCustomer(@RequestParam("id") Long id){
+    public String activateCustomer(@RequestParam("id") Long id){
         userService.activateUser(id);
+        return "this user is activated";
     }
 
     @GetMapping("/admin/deactivate")

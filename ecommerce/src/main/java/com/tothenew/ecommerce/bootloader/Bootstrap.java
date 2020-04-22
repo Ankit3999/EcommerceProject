@@ -2,8 +2,7 @@ package com.tothenew.ecommerce.bootloader;
 
 
 import com.tothenew.ecommerce.entity.*;
-import com.tothenew.ecommerce.repository.RoleRepository;
-import com.tothenew.ecommerce.repository.UserRepository;
+import com.tothenew.ecommerce.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -11,8 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Component
 public class Bootstrap implements ApplicationRunner
@@ -21,6 +19,16 @@ public class Bootstrap implements ApplicationRunner
     UserRepository userRepository;
     @Autowired
     RoleRepository roleRepository;
+    @Autowired
+    CategoryRepository categoryRepository;
+    @Autowired
+    CustomerRepository customerRepository;
+    @Autowired
+    ProductRepository productRepository;
+    @Autowired
+    ProductReviewRepository productReviewRepository;
+    @Autowired
+    ProductVariationRepository productVariationRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception
@@ -37,9 +45,9 @@ public class Bootstrap implements ApplicationRunner
 
             Admin admin1 = new Admin("ankit12","myemail@ttn.com", "admin", "", "admin");
             admin1.setPassword(passwordEncoder.encode("pass"));
-            //admin1.addRole(admin);
-            //admin1.addRole(seller);
             admin1.addRole(admin);
+            admin1.addRole(seller);
+            admin1.addRole(customer);
             admin1.addAddress(new Address("noida","haryana", "india", "04/70", 778884l, "home"));
             admin1.addAddress(new Address("ndls", "delhi", "india", "B/90", 23131l, "work"));
             admin1.setActive(true);
@@ -53,48 +61,93 @@ public class Bootstrap implements ApplicationRunner
             customer1.setActive(true);
             userRepository.save(customer1);
 
-            Seller seller1 = new Seller("anku12","seller.seller@ttn.com", "seller", "", "seller","bh7ht754r5", "amalgam pvt. lmt.", 9999988817l);
+            /*Seller seller1 = new Seller("anku12","seller.seller@ttn.com", "seller", "", "seller","bh7ht754r5", "amalgam pvt. lmt.", 9999988817l);
             seller1.setPassword(passwordEncoder.encode("pass"));
             seller1.addRole(seller);
             seller1.addAddress(new Address("kanpur", "UP", "india", "fg95", 2342342l, "home"));
             seller1.setActive(true);
 
-            userRepository.save(seller1);
+            userRepository.save(seller1);*/
 
             System.out.println("Total users saved::"+userRepository.count());
 
-   /*         User user = new User();
-            user.setUsername("ankit");
-            user.setLastName("kumar");
-            user.setMiddleName("sagar");
-            user.setPassword(passwordEncoder.encode("pass"));
-            Role rolesModel = new Role();
-            Role rolesModel1 = new Role();
-            Role rolesModel2 = new Role();
-            rolesModel.setRole("ROLE_ADMIN");
-            rolesModel1.setRole("ROLE_SELLER");
-            rolesModel2.setRole("ROLE_CUSTOMER");
-            Set<Role> rolesModels = new HashSet<>();
-            rolesModels.add(rolesModel);
-            rolesModels.add(rolesModel1);
-            user.setRoles(rolesModels);
 
-            User user1 = new User();
-            user1.setUsername("ewer");
-            user1.setPassword(passwordEncoder.encode("pass"));
-            user1.setActive(true);
-            user1.setEmail("786ankit555@gmail.com");
-            user1.setFirstName("sagar");
-            user1.setId(001l);
 
-            Set<Role> roles1 = new HashSet<>();
-            roles1.add(rolesModel2);
-            user1.setRoles(roles1);
+            //products and category
 
-            userRepository.save(user);
-            userRepository.save(user1);
+            Product product1 = new Product("UCB T-Shirt", "comfortable", "UCB");
+            Product product2 = new Product("RedTape Jeans", "slim fit", "RedTape");
+            Product product3 = new Product("Nike shoes", "light weight", "Nike");
 
-            System.out.println("Total users saved::" + userRepository.count());*/
+            product1.setId(100L);
+
+            Category fashion = new Category("fashion");
+            Category clothing = new Category("clothing");
+            fashion.addSubCategory(clothing);
+            Category men = new Category("men");
+            Category women = new Category("women");
+            clothing.addSubCategory(men);
+            clothing.addSubCategory(women);
+
+            categoryRepository.save(fashion);
+
+            System.out.println("total categories saved - "+ categoryRepository.count());
+
+
+            ProductVariation mSize = new ProductVariation(5, 1500d);
+            Map<String, Object> attributes1= new HashMap<>();
+            attributes1.put("size", "M-Size");
+            attributes1.put("gender", "female");
+            mSize.setInfoAttributes(attributes1);
+
+            ProductVariation lSize = new ProductVariation(3, 1600d);
+            Map<String, Object> attributes2= new HashMap<>();
+            attributes2.put("size", "L-Size");
+            attributes2.put("gender", "male");
+            lSize.setInfoAttributes(attributes2);
+
+
+            product1.setCategory(men);
+            product1.addVariation(mSize);
+            product1.addVariation(lSize);
+
+            //seller1.addProduct(product1);
+
+            productRepository.save(product1);
+
+
+//  =============================================================================
+            ProductReview review1 = new ProductReview("awesome", "4.3");
+            ProductReview review2 = new ProductReview("comfortable", "4.8");
+
+
+            //order
+
+
+            Orders order1 = new Orders();
+            order1.setDateCreated(new Date());
+            order1.setPaymentMethod("Cash on Delivery");
+            order1.setIds(2009992L);
+            Customer custom = customerRepository.findByEmail("customer@ttn.com");
+            order1.setCustomer(custom);
+            order1.setOrderAddress(new OrderAddress(new Address("patna", "bihar", "india", "56/09", 800024l, "home")));
+
+            //ProductVariation buy1 = productVariationRepository.findById(14L).get();
+            //ProductVariation buy2 = productVariationRepository.findById(15L).get();
+
+            /*OrderProduct orderProduct1 = new OrderProduct();
+            orderProduct1.setProduct_variation(buy1);
+
+            OrderProduct orderProduct2 = new OrderProduct();
+            orderProduct2.setProduct_variation(buy2);*/
+
+
+//  ===============================================================================
+
+            Category mobiles = new Category("mobiles");
+            categoryRepository.save(mobiles);
+
+
 
         }
 

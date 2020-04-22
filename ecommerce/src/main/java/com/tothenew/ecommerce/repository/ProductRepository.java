@@ -18,8 +18,8 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
     List<Product> findAll(Pageable pageable);
     List<Product> findByCategoryId(Long id, Pageable pageable);
 
-    @Query(value = "select category_id from product where id:=id", nativeQuery = true)
-    Long getCategoryId(Long productId);
+    @Query(value = "select category_id from product where id=:id", nativeQuery = true)
+    Long getCategoryId(@Param("id") Long productId);
 
     @Query(value = "select id from product where seller_user_id=:seller_user_id",nativeQuery = true)
     List<Long> getProductIdOfSeller(@Param("seller_user_id") Long seller_user_id, Pageable pageable);

@@ -1,12 +1,14 @@
 package com.tothenew.ecommerce.dto;
 
+import com.tothenew.ecommerce.entity.Product;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.Column;
 import java.util.List;
 
 @Component
-public class ViewProductDto {
+public class ViewProductDto extends Product {
+    Long id;
     @Column(nullable = false,unique = true)
     private String productName;
 
@@ -26,6 +28,28 @@ public class ViewProductDto {
     List<String> values;
     List<String> links;
 
+    public ViewProductDto() {
+    }
+
+    public ViewProductDto(String productName, String brand, Boolean isCancellable, Boolean isReturnable, String description, boolean isActive) {
+        super(productName, brand, isCancellable, isReturnable, description, isActive);
+        this.productName = productName;
+        this.brand = brand;
+        this.isCancellable = isCancellable;
+        this.isReturnable = isReturnable;
+        this.description = description;
+        this.isActive = isActive;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getProductName() {
         return productName;

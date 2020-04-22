@@ -17,6 +17,7 @@ public class Cart {
     @JoinColumn(name = "customer_id")
     Customer customer;
 
+
     @OneToMany(mappedBy = "cart")
     private Set<ProductVariation> product_variationSet;
 

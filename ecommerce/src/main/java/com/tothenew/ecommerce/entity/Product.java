@@ -3,6 +3,8 @@ package com.tothenew.ecommerce.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -38,6 +40,24 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<ProductReview> product_reviews;
 
+    public Product() {
+    }
+
+    public Product(String name, String description, String brand) {
+        this.name = name;
+        this.description = description;
+        this.brand = brand;
+    }
+
+    public Product(String productName, String brand, Boolean isCancellable, Boolean isReturnable, String description, boolean isActive) {
+        this.name=productName;
+        this.brand=brand;
+        this.isCancellable=isCancellable;
+        this.isReturnable=isReturnable;
+        this.description=description;
+        this.isActive=isActive;
+    }
+
     public List<ProductReview> getProduct_reviews() {
         return product_reviews;
     }
@@ -50,9 +70,11 @@ public class Product {
         return variations;
     }
 
+/*
     public void setVariations(Set<ProductVariation> variations) {
         this.variations = variations;
     }
+*/
 
     public Seller getSeller() {
         return seller;
@@ -132,6 +154,26 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public void addVariation(ProductVariation variation){
+        if(variation != null){
+            if(variations == null)
+                variations = new HashSet<>();
+
+            variations.add(variation);
+            variation.setProduct(this);
+        }
+    }
+
+    public void addReview(ProductReview review){
+        if(review != null){
+            if(product_reviews== null)
+                product_reviews = new ArrayList<>();
+
+            product_reviews.add(review);
+            review.setProduct(this);
+        }
     }
 
     /*ID

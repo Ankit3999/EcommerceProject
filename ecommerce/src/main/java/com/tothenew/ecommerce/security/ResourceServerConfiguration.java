@@ -44,11 +44,13 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     public void configure(final HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/").permitAll()
+                .antMatchers("/password").anonymous()
                 .antMatchers("/register/*").anonymous()
                 .antMatchers("/verify/*").anonymous()
                 .antMatchers("/admin/*").hasAnyRole("ADMIN")
                 .antMatchers("/customer/*").hasAnyRole("ADMIN", "USER", "CUSTOMER")
                 .antMatchers("/seller/*").hasAnyRole("SELLER", "ADMIN")
+                .antMatchers("/seller/addProduct").hasAnyRole("SELLER")
                 .antMatchers("/home").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/doLogout").hasAnyRole("ADMIN", "USER", "CUSTOMER")
                 .antMatchers("/password/*").hasAnyRole("ADMIN", "USER", "CUSTOMER")

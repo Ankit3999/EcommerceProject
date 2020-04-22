@@ -99,7 +99,7 @@ public class CustomerService {
     }
 
     public String updatePassword(String username, String newPassword) {
-        Customer customer=customerRepository.findByUsername(username);
+        Customer customer=customerRepository.findByEmail(username);
         customer.setPassword(passwordEncoder.encode(newPassword));
         customerRepository.save(customer);
         sendMail.sendPasswordResetConfirmationMail(customer.getEmail());

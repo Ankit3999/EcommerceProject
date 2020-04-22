@@ -9,7 +9,7 @@ public class AddressDto {
     private String city;
     private String state;
 
-    @Size(min = 6, max = 6, message = "Zipcode should be of length 6")
+    //@Size(min = 6, max = 6, message = "Zipcode should be of length 6")
     private Long zipCode;
     private String country;
     private String label;
