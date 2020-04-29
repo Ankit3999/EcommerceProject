@@ -19,7 +19,7 @@ public class Category {
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private Set<Product> products;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "parentId")
     private Category parentCategory;
 

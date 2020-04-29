@@ -5,17 +5,19 @@ import com.tothenew.ecommerce.dto.CustomerDto;
 import com.tothenew.ecommerce.dto.CustomerProfileDto;
 import com.tothenew.ecommerce.entity.Address;
 import com.tothenew.ecommerce.entity.Customer;
+import com.tothenew.ecommerce.exception.PatternMismatchException;
 import com.tothenew.ecommerce.mailing.SendMail;
 import com.tothenew.ecommerce.repository.AddressRepository;
 import com.tothenew.ecommerce.repository.CustomerRepository;
+import com.tothenew.ecommerce.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class CustomerService {
@@ -24,13 +26,17 @@ public class CustomerService {
     @Autowired
     ModelMapper modelMapper;
     @Autowired
-    PasswordEncoder passwordEncoder;
-    @Autowired
     AddressService addressService;
     @Autowired
     AddressRepository addressRepository;
     @Autowired
     SendMail sendMail;
+    @Autowired
+    CurrentUserService currentUserService;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    MessageSource messageSource;
 
     public Customer convtToCustomer(CustomerDto customerDto){
         Customer customer=modelMapper.map(customerDto, Customer.class);
@@ -49,60 +55,35 @@ public class CustomerService {
         return customerViewProfileDto;
     }
 
-    public String addAddress(Customer customer, AddressDto addressDto){
-        Address address=addressService.toAddress(addressDto);
-        customer.addAddress(address);
-        customerRepository.save(customer);
-        return "Address saved";
+    public CustomerProfileDto viewProfile() {
+        String username=currentUserService.getUser();
+        Customer customer= customerRepository.findByEmail(username);
+        return toCustomerViewProfileDto(customer);
     }
 
-    public String deleteAddress(Long id, String username) {
-        Optional<Address> addressOptional=addressRepository.findById(id);
-        if(!addressOptional.isPresent()){
-            return "address not found";
+    public String updateProfile(CustomerDto customer){
+        String username=currentUserService.getUser();
+        Customer customer1=customerRepository.findByEmail(username);
+        if (customer.getFirstName()!=null)
+            customer1.setFirstName(customer.getFirstName());
+        if (customer.getMiddleName()!=null)
+            customer1.setMiddleName(customer.getMiddleName());
+        if (customer.getLastName()!=null)
+            customer1.setLastName(customer.getLastName());
+        if (customer.getContact()!=null)
+        {
+            if (customer.getContact().toString().matches("(\\+91|0)[0-9]{10}"))
+            {
+                customer1.setContact(customer.getContact());
+            }
+            else
+            {
+                Long[] l = {};
+                throw new PatternMismatchException(messageSource.getMessage("message5.txt",l, LocaleContextHolder.getLocale()));
+            }
         }
-        Address savedAddress = addressOptional.get();
-        if(savedAddress.getUser().equals(username)){
-            addressRepository.deleteAddressById(id);
-            return "address deleted";
-        }
-        return "profile is updated";
+        customerRepository.save(customer1);
+        return "success";
     }
 
-    public String updateAddress(Long id, AddressDto addressDto, String username) {
-        Customer customer=customerRepository.findByUsername(username);
-        Optional<Address> address = addressRepository.findById(id);
-        if(!address.isPresent()){
-            return "address not found";
-        }
-        Address savedAddress = address.get();
-
-
-        if(addressDto.getAddressLine() != null)
-            savedAddress.setAddressLine(addressDto.getAddressLine());
-
-        if(addressDto.getCity() != null)
-            savedAddress.setCity(addressDto.getCity());
-
-        if(addressDto.getState() != null)
-            savedAddress.setState(addressDto.getState());
-
-        if(addressDto.getCountry() != null)
-            savedAddress.setCountry(addressDto.getCountry());
-
-        if(addressDto.getZipCode() != null)
-            savedAddress.setZipCode(addressDto.getZipCode());
-
-        if(addressDto.getLabel() != null)
-            savedAddress.setLabel(addressDto.getLabel());
-        return "address updated successfully";
-    }
-
-    public String updatePassword(String username, String newPassword) {
-        Customer customer=customerRepository.findByEmail(username);
-        customer.setPassword(passwordEncoder.encode(newPassword));
-        customerRepository.save(customer);
-        sendMail.sendPasswordResetConfirmationMail(customer.getEmail());
-        return "password changed successful";
-    }
 }

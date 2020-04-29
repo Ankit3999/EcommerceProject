@@ -10,6 +10,7 @@ import java.util.List;
 
 @Repository
 public interface CategoryMetadataFieldValuesRepository extends CrudRepository<CategoryMetadataFieldValues, Integer> {
+
     @Query(value = "select category_metadata_id from category_metadata_field_values where category_id=:category_id",nativeQuery = true)
     List<Long> getMetadataId(@Param(value = "category_id") Long id);
 
@@ -17,4 +18,10 @@ public interface CategoryMetadataFieldValuesRepository extends CrudRepository<Ca
             "category_id=:category_id and category_metadata_id=:category_metadata_id",nativeQuery = true)
     String getFieldValuesForCompositeKey(@Param(value = "category_id")Long category_id,
                                          @Param(value = "category_metadata_id") Long category_metadata_id);
+
+    @Query(value = "select * from category_metadata_field_values where " +
+            "category_id=:category_id and category_metadata_id=:category_metadata_id ",nativeQuery = true)
+    public CategoryMetadataFieldValues getFieldValues(@Param(value = "category_id")Long category_id,
+                                                      @Param(value = "category_metadata_id") Long category_metadata_id);
+
 }

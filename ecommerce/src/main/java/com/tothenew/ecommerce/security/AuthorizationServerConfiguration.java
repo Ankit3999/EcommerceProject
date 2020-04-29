@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
@@ -41,17 +42,19 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     public void configure(final AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints.tokenStore(tokenStore()).userDetailsService(userDetailsService)
                 .authenticationManager(authenticationManager)
-                .accessTokenConverter(accessTokenConverter());;
+        //        .accessTokenConverter(accessTokenConverter())
+        ;
     }
-    @Bean
+/*    @Bean
     JwtAccessTokenConverter accessTokenConverter(){
         JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
         jwtAccessTokenConverter.setSigningKey("1234");
         return jwtAccessTokenConverter;
-    }
+    }*/
     @Bean
     public TokenStore tokenStore() {
-        return new JwtTokenStore(accessTokenConverter());
+        return new InMemoryTokenStore();
+        //return new JwtTokenStore(accessTokenConverter());
     }
     @Override
     public void configure(final ClientDetailsServiceConfigurer clients) throws Exception {

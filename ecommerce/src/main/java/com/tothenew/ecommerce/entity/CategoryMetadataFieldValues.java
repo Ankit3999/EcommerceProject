@@ -9,10 +9,10 @@ public class CategoryMetadataFieldValues {
     private CategoryMetadataFieldValuesId id = new CategoryMetadataFieldValuesId();
 
     @Column(name = "field_values")
-    private String values;
+    private String fieldValues;
 
     public CategoryMetadataFieldValues(String values) {
-        this.values = values;
+        this.fieldValues = values;
     }
 
     @ManyToOne
@@ -23,12 +23,12 @@ public class CategoryMetadataFieldValues {
     @JoinColumn(name = "categoryMetaFieldId")
     private CategoryMetadataField categoryMetadataField;
 
-    public String getValues() {
-        return values;
+    public String getFieldValues() {
+        return fieldValues;
     }
 
-    public void setValues(String values) {
-        this.values = values;
+    public void setFieldValues(String fieldValues) {
+        this.fieldValues = fieldValues;
     }
 
     public Category getCategory() {
@@ -46,4 +46,14 @@ public class CategoryMetadataFieldValues {
     public void setCategoryMetadataField(CategoryMetadataField categoryMetadataField) {
         this.categoryMetadataField = categoryMetadataField;
     }
+
+    public CategoryMetadataFieldValuesId getId() {
+        return id;
+    }
+
+    public void setId(CategoryMetadataFieldValuesId id) {
+        this.id = id;
+    }
+
+
 }

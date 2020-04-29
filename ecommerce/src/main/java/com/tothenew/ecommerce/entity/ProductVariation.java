@@ -1,7 +1,7 @@
 package com.tothenew.ecommerce.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tothenew.ecommerce.services.HashMapConverter;
+import com.tothenew.ecommerce.utilities.HashMapConverter;
 
 import javax.persistence.*;
 import java.util.Map;

@@ -1,9 +1,6 @@
 package com.tothenew.ecommerce.controller;
 
 import com.tothenew.ecommerce.dto.*;
-import com.tothenew.ecommerce.entity.Address;
-import com.tothenew.ecommerce.entity.Customer;
-import com.tothenew.ecommerce.entity.Seller;
 import com.tothenew.ecommerce.repository.CustomerRepository;
 import com.tothenew.ecommerce.repository.ProductRepository;
 import com.tothenew.ecommerce.repository.SellerRepository;
@@ -16,10 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Set;
 
 @RestController
-public class SellerController {
+public class  SellerController {
 
 
     @Autowired
@@ -49,28 +45,21 @@ public class SellerController {
     }
 
     @GetMapping("/seller/profile")
-    SellerProfileDto viewProfile(){
-        System.out.println("welcome");
-        String username=currentUserService.getUser();
-        System.out.println("----------------"+username);
-        Seller seller =(Seller) sellerRepository.findByEmail(username);
-        return sellerService.toSellerViewProfileDto(seller);
-    }
+    SellerProfileDto viewProfile(){ return sellerService.viewProfile(); }
 
     @PatchMapping("/seller/profile/update")
-    String updateprofile(@RequestBody SellerDto sellerDto){
+    ResponseEntity updateprofile(@RequestBody SellerDto sellerDto){
         return sellerService.updateProfile(sellerDto);
     }
 
     @PatchMapping("/seller/password/update")
     String updatePassword(@RequestParam("password") String newPassword){
-        String username=currentUserService.getUser();
-        return sellerService.updatePassword(username, newPassword);
+        return userService.updatePassword(newPassword);
     }
 
     @PutMapping("/seller/address/update/{id}")
     String updateAddress(@Valid @RequestBody AddressDto addressDto, @PathVariable Long id){
-        String username=currentUserService.getUser();
-        return sellerService.updateAddress(id, addressDto, username);
+        userService.updateAddress(id, addressDto);
+        return "Address with id "+id+" updated successfully";
     }
 }

@@ -1,9 +1,9 @@
 package com.tothenew.ecommerce.entity;
 
-import com.tothenew.ecommerce.validator.ValidGST;
 import org.hibernate.validator.constraints.Range;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,11 +11,16 @@ import java.util.Set;
 @Table(name = "seller")
 @PrimaryKeyJoinColumn(name = "id")
 public class Seller extends User{
-    private Long userId;
-    //@ValidGST
+
+    @NotNull
+    @Column(unique = true)
+    //@Pattern(regexp = "\\d{2}[A-Z]{5}\\d{4}[A-Z]{1}[A-Z\\d]{1}[Z]{1}[A-Z\\d]{1}")
     private String gst;
-    //@Range(min = 10, max = 12)
+    @NotNull
+    @Column(unique = true)
     private Long companyContact;
+    @NotNull
+    @Column(unique = true)
     private String companyName;
 
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
@@ -31,14 +36,6 @@ public class Seller extends User{
         this.companyName = companyName;
         this.companyContact = companyContact;
         this.addRole(new Role(1002l, "ROLE_SELLER"));
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public String getGst() {

@@ -1,18 +1,16 @@
 package com.tothenew.ecommerce.services;
 
-import com.tothenew.ecommerce.dto.AddressDto;
-import com.tothenew.ecommerce.dto.CustomerDto;
-import com.tothenew.ecommerce.dto.SellerDto;
-import com.tothenew.ecommerce.dto.SellerProfileDto;
+import com.tothenew.ecommerce.dto.*;
 import com.tothenew.ecommerce.entity.Address;
-import com.tothenew.ecommerce.entity.Customer;
 import com.tothenew.ecommerce.entity.Seller;
 import com.tothenew.ecommerce.exception.PatternMismatchException;
 import com.tothenew.ecommerce.mailing.SendMail;
 import com.tothenew.ecommerce.repository.AddressRepository;
 import com.tothenew.ecommerce.repository.SellerRepository;
+import com.tothenew.ecommerce.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +30,8 @@ public class SellerService {
     SendMail sendMail;
     @Autowired
     AddressRepository addressRepository;
+    @Autowired
+    UserRepository userRepository;
 
     public Seller convtToSeller(SellerDto sellerDto){
         Seller seller =modelMapper.map(sellerDto, Seller.class);
@@ -44,7 +44,13 @@ public class SellerService {
         return sellerProfileDto;
     }
 
-    public String updateProfile(SellerDto sellerDto){
+    public SellerProfileDto viewProfile(){
+        String username=currentUserService.getUser();
+        Seller seller= sellerRepository.findByEmail(username);
+        return toSellerViewProfileDto(seller);
+    }
+
+    public ResponseEntity updateProfile(SellerDto sellerDto){
         String username=currentUserService.getUser();
         Seller seller=sellerRepository.findByEmail(username);
         if (sellerDto.getFirstName()!=null)
@@ -69,44 +75,7 @@ public class SellerService {
         if(sellerDto.getGst()!=null)
             seller.setGst(sellerDto.getGst());
         sellerRepository.save(seller);
-        return "success";
-    }
-
-    public String updatePassword(String username, String newPassword) {
-        Seller seller=sellerRepository.findByEmail(username);
-        seller.setPassword(passwordEncoder.encode(newPassword));
-        sellerRepository.save(seller);
-        sendMail.sendPasswordResetConfirmationMail(seller.getEmail());
-        return "password changed successful";
-    }
-
-    public String updateAddress(Long id, AddressDto addressDto, String username) {
-        Seller seller=sellerRepository.findByUsername(username);
-        Optional<Address> address = addressRepository.findById(id);
-        if(!address.isPresent()){
-            return "address not found";
-        }
-        Address savedAddress = address.get();
-
-
-        if(addressDto.getAddressLine() != null)
-            savedAddress.setAddressLine(addressDto.getAddressLine());
-
-        if(addressDto.getCity() != null)
-            savedAddress.setCity(addressDto.getCity());
-
-        if(addressDto.getState() != null)
-            savedAddress.setState(addressDto.getState());
-
-        if(addressDto.getCountry() != null)
-            savedAddress.setCountry(addressDto.getCountry());
-
-        if(addressDto.getZipCode() != null)
-            savedAddress.setZipCode(addressDto.getZipCode());
-
-        if(addressDto.getLabel() != null)
-            savedAddress.setLabel(addressDto.getLabel());
-        return "address updated successfully";
+        return ResponseEntity.ok().body("profile is updated successfully");
     }
 
 }

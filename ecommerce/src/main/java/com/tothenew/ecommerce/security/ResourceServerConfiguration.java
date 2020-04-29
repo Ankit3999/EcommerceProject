@@ -40,13 +40,25 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     public void configureGlobal(final AuthenticationManagerBuilder authenticationManagerBuilder) {
         authenticationManagerBuilder.authenticationProvider(authenticationProvider());
     }
+
+    private static final String[] AUTH_WHITELIST = {
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**"
+    };
+
     @Override
     public void configure(final HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/").permitAll()
+                .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers("/password").anonymous()
                 .antMatchers("/register/*").anonymous()
-                .antMatchers("/verify/*").anonymous()
+                .antMatchers("/verify/customer").anonymous()
                 .antMatchers("/admin/*").hasAnyRole("ADMIN")
                 .antMatchers("/customer/*").hasAnyRole("ADMIN", "USER", "CUSTOMER")
                 .antMatchers("/seller/*").hasAnyRole("SELLER", "ADMIN")

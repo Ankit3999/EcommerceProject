@@ -1,56 +1,78 @@
 package com.tothenew.ecommerce.services;
 
-import com.tothenew.ecommerce.dao.TokenDao;
-import com.tothenew.ecommerce.dto.CustomerDto;
+import com.tothenew.ecommerce.dto.AddressDto;
 import com.tothenew.ecommerce.entity.Address;
 import com.tothenew.ecommerce.entity.Customer;
 import com.tothenew.ecommerce.entity.Token;
 import com.tothenew.ecommerce.entity.User;
-import com.tothenew.ecommerce.exception.PatternMismatchException;
+import com.tothenew.ecommerce.exception.NotFoundException;
+import com.tothenew.ecommerce.exception.NullException;
 import com.tothenew.ecommerce.exception.UserNotFoundException;
 import com.tothenew.ecommerce.mailing.MailVerification;
+import com.tothenew.ecommerce.mailing.SendMail;
+import com.tothenew.ecommerce.repository.AddressRepository;
 import com.tothenew.ecommerce.repository.CustomerRepository;
 import com.tothenew.ecommerce.repository.TokenRepository;
 import com.tothenew.ecommerce.repository.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 @Service
 public class UserService {
+    public int count;
+    Long[] l = {};
     @Autowired
     UserRepository userRepository;
 
     private JavaMailSender javaMailSender;
 
     @Autowired
-    TokenDao tokenDao;
+    TokenService tokenService;
+    @Autowired
+    SendMail sendMail;
     @Autowired
     TokenRepository tokenRepository;
     @Autowired
     MailVerification mailVerification;
-
+    @Autowired
+    MessageSource messageSource;
     @Autowired
     CurrentUserService currentUserService;
     @Autowired
     CustomerRepository customerRepository;
+    @Autowired
+    AddressRepository addressRepository;
+    @Autowired
+    AddressService addressService;
+    @Autowired
+    ModelMapper modelMapper;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserService(JavaMailSender javaMailSender){
         this.javaMailSender = javaMailSender;
     }
 
-    @Async
-    public void activateUser(Long id)
+    public ResponseEntity activateUser(Long id)
     {
         User user1 = null;
-        String message;
         Optional<User> user = userRepository.findById(id);
 
         if (user.isPresent())
@@ -58,7 +80,7 @@ public class UserService {
             user1 = user.get();
             if (user1.getActive()==true)
             {
-                message = "user account is already activated";
+                return ResponseEntity.ok().body("user account is already deactivated");
             }
             else
             {
@@ -73,28 +95,27 @@ public class UserService {
                 javaMailSender.send(mail);
                 userRepository.save(user1);
                 System.out.println("Email Sent!");
-                message = "your account has been activated";
+                return ResponseEntity.ok().body("account has been successfully deactivated");
             }
         }
         else
         {
-            throw new UserNotFoundException("user with this id is not present");
+            Long[] l ={};
+            throw new UserNotFoundException(messageSource.getMessage("message3.txt",l, LocaleContextHolder.getLocale()));
         }
-        System.out.println("message is"+message);
     }
 
     @Async
-    public String  deActivateuser(Long id)
+    public ResponseEntity deActivateuser(Long id)
     {
         User user1 = null;
-        String message = null;
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent())
         {
             user1 = user.get();
             if (user1.getActive()==false)
             {
-                message = "user account is already deactivated";
+                return ResponseEntity.ok().body("user account is already deactivated");
             }
             else
             {
@@ -108,15 +129,110 @@ public class UserService {
                 mail.setText("your account has been deactivated by admin you can not login now");
                 javaMailSender.send(mail);
                 System.out.println("Email Sent!");
-                message = "your account has been activated";
-            }
+                return ResponseEntity.ok().body("account has been successfully deactivated");            }
         }
         else
         {
-            System.out.println("user with this id is not present");
-            throw new RuntimeException();
+            Long[] l ={};
+            throw new UserNotFoundException(messageSource.getMessage("message3.txt",l, LocaleContextHolder.getLocale()));
         }
-        return message;
+    }
+
+    public String addAddress(AddressDto addressDto){
+        String email=currentUserService.getUser();
+        User user=userRepository.findByEmail(email);
+        Address address=addressService.toAddress(addressDto);
+        address.setUser(user);
+        user.addAddress(address);
+        userRepository.save(user);
+        return "Address saved";
+    }
+
+
+    @Modifying
+    @Transactional
+    public String deleteAddress(Long id) {
+        String username=currentUserService.getUser();
+        Optional<Address> addressOptional=addressRepository.findById(id);
+        if(!addressOptional.isPresent()){
+            throw new NotFoundException("address not present");
+        }
+        Address savedAddress = addressOptional.get();
+        if(savedAddress.getUser().equals(username)){
+            addressRepository.deleteAddressById(id);
+            return "address deleted";
+        }
+        return "profile is updated";
+    }
+
+    @Modifying
+    @Transactional
+    public void updateAddress(Long id, AddressDto address) {
+        String email=currentUserService.getUser();
+        User user=userRepository.findByEmail(email);
+        Set<Address> addresses=user.getAddresses();
+        Optional<Address> address1 = addressRepository.findById(id);
+        int count=0;
+        if(!address1.isPresent()){
+            throw new NotFoundException(messageSource.getMessage("message8.txt",l, LocaleContextHolder.getLocale()));
+        }
+        else{
+            Address savedAddress2 = address1.get();
+            for (Address address2 : addresses) {
+                if (address1.get().getId() == address2.getId()) {
+                    if (address.getAddressLine() != null)
+                        address2.setAddressLine(address.getAddressLine());
+                    if (address.getCity() != null)
+                        address2.setCity(address.getCity());
+                    if (address.getCountry() != null)
+                        address2.setCountry(address.getCountry());
+                    if (address.getState() != null)
+                        address2.setState(address.getState());
+                    if (address.getZipCode() != null)
+                        address2.setZipCode(address.getZipCode());
+                    address2.setUser(user);
+                    address2.setId(id);
+                    addressRepository.save(address2);
+                    count++;
+                }
+            }
+            if (count==0)
+            {
+                throw new NullException("you cannot update this address");
+            }
+        }
+    }
+
+    public List<AddressDto> getAddress(){
+        Long[] l = {};
+        String email = currentUserService.getUser();
+        Customer customer = customerRepository.findByEmail(email);
+        Set<Address> addresses = customer.getAddresses();
+        List<AddressDto> list = new ArrayList<>();
+        if (addresses.isEmpty())
+        {
+            throw new NotFoundException(messageSource.getMessage("message8.txt",l,LocaleContextHolder.getLocale()));
+        }
+        else
+        {
+            for (Address address : addresses)
+            {
+                AddressDto addressDTO = modelMapper.map(address,AddressDto.class);
+                list.add(addressDTO);
+
+            }
+
+        }
+        return list;
+    }
+
+    public String updatePassword(String newPassword) {
+        String username=currentUserService.getUser();
+        User user=userRepository.findByEmail(username);
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+        sendMail.sendPasswordResetConfirmationMail(user.getEmail());
+        return "password changed successful";
     }
 
     public void forgotPassword(String email_id) {
@@ -130,7 +246,7 @@ public class UserService {
             mail.setTo(user.getEmail());
             mail.setFrom("kumsag11@gmail.com");
             mail.setSubject("Regarding forgot password");
-            String uu = tokenDao.getToken(user);
+            String uu = tokenService.getToken(user);
             mail.setText(uu);
             javaMailSender.send(mail);
             System.out.println("Email Sent!");
@@ -148,7 +264,7 @@ public class UserService {
             System.out.println("invalid token");
         } else {
             if (token1.isExpired()) {
-                mailVerification.sendNotificaitoin(userRepository.findByUsername(token1.getName()));
+                mailVerification.sendNotification(userRepository.findByUsername(token1.getName()));
                 tokenRepository.delete(token1);
             } else {
                 User user2 = userRepository.findByUsername(token1.getName());
@@ -159,32 +275,4 @@ public class UserService {
         }
     }
 
-    public Set<Address> getAddress(String userName){
-        User user=userRepository.findByEmail(userName);
-        return user.getAddresses();
-    }
-
-    public String updateProfile(CustomerDto customer){
-        String username=currentUserService.getUser();
-        Customer customer1=customerRepository.findByEmail(username);
-        if (customer.getFirstName()!=null)
-            customer1.setFirstName(customer.getFirstName());
-        if (customer.getMiddleName()!=null)
-            customer1.setMiddleName(customer.getMiddleName());
-        if (customer.getLastName()!=null)
-            customer1.setLastName(customer.getLastName());
-        if (customer.getContact()!=null)
-        {
-            if (customer.getContact().toString().matches("(\\+91|0)[0-9]{10}"))
-            {
-                customer1.setContact(customer.getContact());
-            }
-            else
-            {
-                throw new PatternMismatchException("Contact number should start with +91 or 0 and length should be 10");
-            }
-        }
-        customerRepository.save(customer1);
-        return "success";
-    }
 }

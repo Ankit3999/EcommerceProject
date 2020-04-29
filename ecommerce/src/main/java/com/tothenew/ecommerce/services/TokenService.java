@@ -1,4 +1,4 @@
-package com.tothenew.ecommerce.dao;
+package com.tothenew.ecommerce.services;
 
 
 import com.tothenew.ecommerce.entity.Token;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import java.util.UUID;
 
 @Component
-public class TokenDao {
+public class TokenService {
 
     @Autowired
     TokenRepository tokenRepository;
@@ -44,7 +44,7 @@ public class TokenDao {
         } else {
             if (token1.isExpired())
             {
-                mailVerification.sendNotificaitoin(userRepository.findByUsername(token1.getName()));
+                mailVerification.sendNotification(userRepository.findByUsername(token1.getName()));
                 tokenRepository.delete(token1);
             } else {
                 System.out.println("saving");

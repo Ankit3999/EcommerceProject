@@ -1,4 +1,4 @@
-package com.tothenew.ecommerce.services;
+package com.tothenew.ecommerce.utilities;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tothenew.ecommerce.entity.ProductVariation;

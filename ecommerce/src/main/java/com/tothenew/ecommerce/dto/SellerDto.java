@@ -4,22 +4,21 @@ import com.tothenew.ecommerce.validator.ValidGST;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 @Component
 public class SellerDto extends UserDto {
-    @NotNull
-    @NotEmpty
-    @Size(min = 15, max = 15)
-    //@ValidGST
+    @Column(unique = true)
+    //@Pattern(regexp = "\\d{2}[A-Z]{5}\\d{4}[A-Z]{1}[A-Z\\d]{1}[Z]{1}[A-Z\\d]{1}")
     private String gst;
-    @NotNull
-    //@NotEmpty
-    //@Range(min = 10, max = 12)
+
+    @Column(unique = true)
     private Long companyContact;
-    @NotNull
-    @NotEmpty
+
+    @Column(unique = true)
     private String companyName;
 
     public SellerDto() {
