@@ -3,6 +3,7 @@ package com.tothenew.ecommerce.dto;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Component
 public class  ProductDto {
@@ -18,6 +19,10 @@ public class  ProductDto {
     private Boolean isReturnable = false;
     private Boolean isCancellable = false;
     private boolean isActive=false;
+    private String categoryName;
+
+    List<String> fieldName;
+    List<String> values;
 
     public ProductDto() {
     }
@@ -84,6 +89,30 @@ public class  ProductDto {
 
     public Boolean getReturnable() {
         return isReturnable;
+    }
+
+    public List<String> getFieldName() {
+        return fieldName;
+    }
+
+    public void setFieldName(List<String> fieldName) {
+        this.fieldName = fieldName;
+    }
+
+    public List<String> getValues() {
+        return values;
+    }
+
+    public void setValues(List<String> values) {
+        this.values = values;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public void setReturnable(Boolean returnable) {

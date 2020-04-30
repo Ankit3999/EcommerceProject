@@ -3,19 +3,24 @@ package com.tothenew.ecommerce.controller;
 import com.tothenew.ecommerce.dto.AddressDto;
 import com.tothenew.ecommerce.dto.CustomerDto;
 import com.tothenew.ecommerce.dto.CustomerProfileDto;
+import com.tothenew.ecommerce.entity.Customer;
 import com.tothenew.ecommerce.repository.CustomerRepository;
 import com.tothenew.ecommerce.repository.ProductRepository;
 import com.tothenew.ecommerce.repository.UserRepository;
 import com.tothenew.ecommerce.services.CurrentUserService;
 import com.tothenew.ecommerce.services.CustomerService;
+import com.tothenew.ecommerce.services.ImageService;
 import com.tothenew.ecommerce.services.UserService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -40,6 +45,8 @@ public class CustomerController {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    ImageService imageService;
 
     @GetMapping("/customer/home")
     ResponseEntity customerhome(){
@@ -49,6 +56,22 @@ public class CustomerController {
 
     @GetMapping("/customer/profile")
     CustomerProfileDto viewprofile(HttpServletRequest request){ return customerService.viewProfile(); }
+
+    @GetMapping("/customer/viewProfileImage")
+    public ResponseEntity<Object> viewProfileImage(HttpServletRequest request) throws IOException {
+        String username = currentUserService.getUser();
+        Customer customer = customerRepository.findByEmail(username);
+        String filename = customer.getId().toString()+"_";
+        return imageService.downloadImage(filename,request);
+    }
+
+    @PostMapping("/customer/uploadProfilePic")
+    public ResponseEntity<Object> uploadFile(@RequestParam("file") MultipartFile file) throws IOException
+    {
+        String username = currentUserService.getUser();
+        Customer customer = customerRepository.findByEmail(username);
+        return imageService.uploadSingleImage(file,customer);
+    }
 
     @PatchMapping("/customer/profile/update")
     void updateprofile(@RequestBody CustomerDto customerDto){

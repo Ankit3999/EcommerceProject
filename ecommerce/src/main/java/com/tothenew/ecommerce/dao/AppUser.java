@@ -35,6 +35,8 @@ public class AppUser implements UserDetails {
     private boolean isActive;
     private boolean isExpired;
     private boolean isLocked;
+    private boolean isAccountNonLocked;
+    private boolean isAccountNonExpired;
 
     private Set<Role> roles;
 

@@ -7,56 +7,26 @@ import java.util.*;
 
 @Component
 public class ProductVariationDto extends ProductDto{
-    private Long id;
+    List<String> fields;
+    List<String> values;
+    Double price;
+    Boolean currentActiveStatus;
+    Integer QuantityAvailable;
 
-    @NotNull
-    private Long productId;
-    private Integer quantityAvailable;
-    private Double price;
-    private Set<String> images;
-    List<String> field = new ArrayList<>();
-    List<String> values = new ArrayList<>();
-
-    @NotNull
-    private Map<String, String> attributes = new LinkedHashMap<>();
-
-    private ProductDto productDto;
-
-    public ProductVariationDto() {
+    public List<String> getFields() {
+        return fields;
     }
 
-    public ProductVariationDto(Long id, @NotNull Long productId, Integer quantityAvailable, Double price, Set<String> images, @NotNull Map<String, String> attributes, ProductDto productDto) {
-        this.id = id;
-        this.productId = productId;
-        this.quantityAvailable = quantityAvailable;
-        this.price = price;
-        this.images = images;
-        this.attributes = attributes;
-        this.productDto = productDto;
+    public void setFields(List<String> fields) {
+        this.fields = fields;
     }
 
-    public Long getId() {
-        return id;
+    public List<String> getValues() {
+        return values;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
-
-    public Integer getQuantityAvailable() {
-        return quantityAvailable;
-    }
-
-    public void setQuantityAvailable(Integer quantityAvailable) {
-        this.quantityAvailable = quantityAvailable;
+    public void setValues(List<String> values) {
+        this.values = values;
     }
 
     public Double getPrice() {
@@ -67,43 +37,19 @@ public class ProductVariationDto extends ProductDto{
         this.price = price;
     }
 
-    public Set<String> getImages() {
-        return images;
+    public Boolean getCurrentActiveStatus() {
+        return currentActiveStatus;
     }
 
-    public void setImages(Set<String> images) {
-        this.images = images;
+    public void setCurrentActiveStatus(Boolean currentActiveStatus) {
+        this.currentActiveStatus = currentActiveStatus;
     }
 
-    public Map<String, String> getAttributes() {
-        return attributes;
+    public Integer getQuantityAvailable() {
+        return QuantityAvailable;
     }
 
-    public void setAttributes(Map<String, String> attributes) {
-        this.attributes = attributes;
-    }
-
-    public ProductDto getProductDto() {
-        return productDto;
-    }
-
-    public void setProductDto(ProductDto productDto) {
-        this.productDto = productDto;
-    }
-
-    public List<String> getField() {
-        return field;
-    }
-
-    public void setField(List<String> field) {
-        this.field = field;
-    }
-
-    public List<String> getValues() {
-        return values;
-    }
-
-    public void setValues(List<String> values) {
-        this.values = values;
+    public void setQuantityAvailable(Integer quantityAvailable) {
+        QuantityAvailable = quantityAvailable;
     }
 }

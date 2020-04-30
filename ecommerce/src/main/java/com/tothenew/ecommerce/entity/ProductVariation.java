@@ -18,6 +18,7 @@ public class ProductVariation {
     private String metadata;
     private String primaryImageName;
     private String infoJson;
+    private Boolean isActive;
 
     @Convert(converter = HashMapConverter.class)
     private Map<String,Object> infoAttributes;
@@ -95,6 +96,14 @@ PRIMARY_IMAGE_NAME*/
 
     public void setProductId(Long productId) {
         this.productId = productId;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
     }
 
     public Integer getQuantityAvailable() {

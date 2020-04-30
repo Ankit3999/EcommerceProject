@@ -26,7 +26,6 @@ public class ViewProductDto extends Product {
     String name;
     List<String> fieldName;
     List<String> values;
-    List<String> links;
 
     public ViewProductDto() {
     }
@@ -123,11 +122,4 @@ public class ViewProductDto extends Product {
         this.values = values;
     }
 
-    public List<String> getLinks() {
-        return links;
-    }
-
-    public void setLinks(List<String> links) {
-        this.links = links;
-    }
 }

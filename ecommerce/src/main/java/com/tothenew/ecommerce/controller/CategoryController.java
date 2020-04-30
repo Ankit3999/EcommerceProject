@@ -10,7 +10,6 @@ import com.tothenew.ecommerce.services.CategoryService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -101,7 +100,7 @@ public class CategoryController {
     //Seller APIs
 
     @ApiOperation("to view all categories")
-    @GetMapping("/viewCategoriesForSeller")
+    @GetMapping("/seller/viewCategoriesForSeller")
     public List<ViewCategoryDto> viewCategoriesDTOS() {
         return categoryService.viewAllCategoriesForSeller();
     }
@@ -109,20 +108,20 @@ public class CategoryController {
     //Customer APIs
 
     @ApiOperation("to view all categories")
-    @GetMapping("/viewCategoriesForCustomer")
+    @GetMapping("/customer/viewCategoriesForCustomer")
     public List<Object[]> getMainCategoriesForCustomer() {
         return categoryService.getAllCategory();
     }
 
     @ApiOperation("to view a single category")
-    @GetMapping("/viewCategoriesForCustomer/{id}")
+    @GetMapping("/customer/viewCategoriesForCustomer/{id}")
     public List<Object[]> getSubCategory(@PathVariable(name = "id") Long id) {
         List<Object[]> list = categoryService.getAllSubCategory(id);
         return list;
     }
 
     @ApiOperation("to get filtering details of a category")
-    @GetMapping("/filtering/{id}")
+    @GetMapping("/customer/filtering/{id}")
     public CategoryFilterDto getFilteringDetails(@PathVariable Long id) {
         return categoryService.getFilteringDetails(id);
     }

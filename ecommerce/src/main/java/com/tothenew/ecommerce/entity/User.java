@@ -24,6 +24,7 @@ public class User {
     private Boolean isActive=false;
     private boolean isExpired = false;
     private boolean isLocked = false;
+    private boolean isAccountNonLocked;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="user_role",joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id")
@@ -93,6 +94,18 @@ public class User {
 
     public String getFirstName() {
         return firstName;
+    }
+
+    public boolean isAccountNonLocked() {
+        return isAccountNonLocked;
+    }
+
+    public void setAccountNonLocked(boolean accountNonLocked) {
+        isAccountNonLocked = accountNonLocked;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public void setFirstName(String firstName) {

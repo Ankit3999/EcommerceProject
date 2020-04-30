@@ -1,4 +1,3 @@
-/*
 package com.tothenew.ecommerce.event;
 
 import com.tothenew.ecommerce.entity.User;
@@ -29,17 +28,13 @@ public class CustomEventListener
     SendMail sendMail;
 
     @EventListener
-    public void AuthenticationFailEvent(AuthenticationFailureBadCredentialsEvent event)
-    {
+    public void AuthenticationFailEvent(AuthenticationFailureBadCredentialsEvent event) {
         String username = event.getAuthentication().getPrincipal().toString();
         Iterable<UserAttempts> userAttempts = userAttemptsRepository.findAll();
         int count=0;
-        for (UserAttempts userAttempts1 : userAttempts)
-        {
-            if (userAttempts1.getEmail().equals(username))
-            {
-                if (userAttempts1.getAttempts()>=3)
-                {
+        for (UserAttempts userAttempts1 : userAttempts) {
+            if (userAttempts1.getEmail().equals(username)) {
+                if (userAttempts1.getAttempts()>=3) {
                     User user = userRepository.findByUsername(username);
                     user.setLocked(true);
                     userRepository.save(user);
@@ -53,8 +48,7 @@ public class CustomEventListener
                 }
             }
         }
-        if (count==0)
-        {
+        if (count==0) {
             UserAttempts userAttempts1 = new UserAttempts();
             User user = userRepository.findByUsername(username);
             userAttempts1.setEmail(user.getUsername());
@@ -64,24 +58,17 @@ public class CustomEventListener
     }
 
     @EventListener
-    public void AuthenticationPass(AuthenticationSuccessEvent event)
-    {
+    public void AuthenticationPass(AuthenticationSuccessEvent event) {
         try {
             LinkedHashMap<String ,String > hashMap = (LinkedHashMap<String, String>) event.getAuthentication().getDetails();
             Iterable<UserAttempts> userAttempts = userAttemptsRepository.findAll();
 
-            for (UserAttempts userAttempts1 : userAttempts)
-            {
-                if (userAttempts1.getEmail().equals(hashMap.get("username")))
-                {
+            for (UserAttempts userAttempts1 : userAttempts) {
+                if (userAttempts1.getEmail().equals(hashMap.get("username"))) {
                     userAttemptsRepository.deleteById(userAttempts1.getId());
                 }
             }
         }
-        catch (Exception e)
-        {
-
-        }
+        catch (Exception e) { }
     }
 }
-*/

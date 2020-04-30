@@ -13,6 +13,8 @@ import com.tothenew.ecommerce.services.RegistrationService;
 import com.tothenew.ecommerce.services.SellerService;
 import io.swagger.annotations.ApiOperation;
 import org.bouncycastle.openssl.PasswordException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,8 @@ import javax.validation.Valid;
 
 @RestController
 public class RegistrationController {
+    //Logger logger = LoggerFactory.getLogger(NameOfTheClass.class);
+
     @Autowired
     CustomerRepository customerRepository;
     @Autowired

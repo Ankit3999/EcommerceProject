@@ -20,4 +20,6 @@ public interface CategoryMetadataFieldRepository extends PagingAndSortingReposit
     @Query(value = "delete from category_metadata_field where id=:id",nativeQuery = true)
     public void deleteMetadatField(@Param("id") Long id);
 
+    @Query(value = "select name from category_metadata_field where id = :id",nativeQuery = true)
+    public String getNameOfMetadata(@Param("id") Long id);
 }

@@ -51,6 +51,7 @@ public class Bootstrap implements ApplicationRunner
             admin1.addAddress(new Address("noida","haryana", "india", "04/70", 778884l, "home"));
             admin1.addAddress(new Address("ndls", "delhi", "india", "B/90", 23131l, "work"));
             admin1.setActive(true);
+            admin1.setAccountNonLocked(true);
 
             userRepository.save(admin1);
 

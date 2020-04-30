@@ -20,4 +20,7 @@ public interface UserRepository extends CrudRepository<User,Long>, PagingAndSort
 
     @Query(value = "select id from user where id in(select user_id from user_role where role_id in(select id from role where role='ROLE_SELLER'))",nativeQuery = true)
     List<Long> findIdOfSellers(Pageable pageable);
+
+    @Query(value = "select id from user where id in(select user_id from user_role where role_id in(select id from role where role='ROLE_ADMIN'))",nativeQuery = true)
+    Long findAdmin();
 }

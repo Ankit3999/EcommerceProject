@@ -96,10 +96,10 @@ public class AdminService {
         Optional<User> optionalUser=userRepository.findById(user_id);
         if(optionalUser.isPresent()){
             user=optionalUser.get();
-            if(user.isLocked()==false)
+            if(user.isAccountNonLocked()==false)
                 return ResponseEntity.ok().body("user account is already locked");
             else{
-                user.setLocked(false);
+                user.setAccountNonLocked(false);
                 userRepository.save(user);
                 sendMail.sendEmail(user.getEmail(),"regarding account","your account has been locked by admin");
                 return ResponseEntity.ok().body("account has been locked");
@@ -116,11 +116,11 @@ public class AdminService {
         Optional<User> optionalUser=userRepository.findById(user_id);
         if(optionalUser.isPresent()) {
             user = optionalUser.get();
-            if(user.isLocked()==true){
+            if(user.isAccountNonLocked()==true){
                 return ResponseEntity.ok().body("user account is already unlocked");
             }
             else{
-                user.setLocked(true);
+                user.setAccountNonLocked(true);
                 userRepository.save(user);
                 sendMail.sendEmail(user.getEmail(),"regarding account","your account has been unlocked by admin");
                 return ResponseEntity.ok().body("account has been unlocked");
