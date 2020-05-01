@@ -17,6 +17,7 @@ import java.util.List;
 
 @RestController
 public class AdminController {
+    //All working
 
     @Autowired
     private CustomerRepository customerRepository;

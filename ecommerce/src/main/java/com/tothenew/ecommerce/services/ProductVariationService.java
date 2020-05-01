@@ -43,7 +43,7 @@ public class ProductVariationService {
             if (product1.getActive()) {
                 Map<String, String> stringMap = new HashMap<>();
                 String seller = currentUserService.getUser();
-                Seller seller1 = sellerRepository.findByUsername(seller);
+                Seller seller1 = sellerRepository.findByEmail(seller);
                 Map<String, Object> map = productVariation.getInfoAttributes();
 
                 if ((product1.getSeller().getUsername()).equals(seller1.getUsername())) {

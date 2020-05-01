@@ -29,7 +29,7 @@ public class ProductController {
     //for admin
 
     @ApiOperation("to view a single product")
-    @PutMapping("/admin/product/{productId}")
+    @GetMapping("/admin/product/{productId}")
     public ViewProductDto getOneProductForAdmin(@PathVariable Long productId) throws NotFoundException {
         return productService.viewSingleProductForAdmin(productId);
     }
@@ -41,13 +41,13 @@ public class ProductController {
     }
 
     @ApiOperation("to activate a product")
-    @PutMapping("/admin/product/activate/{id}")
+    @GetMapping("/admin/product/activate/{id}")
     public String activateProduct(@PathVariable Long id){
         return productService.activateProduct(id);
     }
 
     @ApiOperation("To deactivate a product")
-    @PutMapping("/admin/product/deactivate/{id}")
+    @GetMapping("/admin/product/deactivate/{id}")
     public String deactivateProduct(@PathVariable Long id){
         return productService.deactivateProductById(id);
     }
@@ -64,7 +64,7 @@ public class ProductController {
     }
 
     @ApiOperation("to view all the active products of a particular category")
-    @GetMapping("customer/allProduct/{categoryId}")
+    @GetMapping("/customer/allProduct/{categoryId}")
     public List<ViewProductDtoforCustomer> allProductsForCustomer(@PathVariable Long categoryId, @RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy) throws NotFoundException {
         return productService.getProductDetailsForCustomer(categoryId, pageNo, pageSize, sortBy);
     }
@@ -88,9 +88,7 @@ public class ProductController {
     @ApiOperation("to get a single product")
     @GetMapping("/seller/product/{id}")
     public ProductDto getProduct(@PathVariable Long id) throws NotFoundException {
-        String email=currentUserService.getUser();
-        System.out.println("----------------->>>"+email+"<<<<-------------");
-        return productService.getProduct(id, email);
+        return productService.getProduct(id);
     }
 
     @ApiOperation("to delete a product")

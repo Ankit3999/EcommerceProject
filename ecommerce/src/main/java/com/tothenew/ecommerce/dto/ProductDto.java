@@ -7,7 +7,7 @@ import java.util.List;
 
 @Component
 public class  ProductDto {
-    private Long id;
+
     @NotNull
     private String name;
     @NotNull
@@ -27,8 +27,8 @@ public class  ProductDto {
     public ProductDto() {
     }
 
-    public ProductDto(Long id, @NotNull String name, @NotNull String brand, @NotNull Long categoryId, CategoryDto categoryDto, String description, Boolean isReturnable, Boolean isCancellable, Boolean isActive) {
-        this.id = id;
+    public ProductDto( @NotNull String name, @NotNull String brand, @NotNull Long categoryId, CategoryDto categoryDto, String description, Boolean isReturnable, Boolean isCancellable, Boolean isActive) {
+
         this.name = name;
         this.brand = brand;
         this.categoryId = categoryId;
@@ -39,13 +39,6 @@ public class  ProductDto {
         this.isActive=isActive;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

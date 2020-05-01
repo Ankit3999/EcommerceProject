@@ -30,13 +30,13 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
     @Query(value = "select id from product where seller_user_id=:seller_user_id",nativeQuery = true)
     List<Long> getProductIdOfSeller(@Param("seller_user_id") Long seller_user_id, Pageable pageable);
 
-    @Query(value = "select id from product where is_active=:true", nativeQuery = true)
+    @Query(value = "select id from product", nativeQuery = true)
     List<Long> getAllId(Pageable paging);
 
     @Query(value = "select * from product where category_id=:category_id",nativeQuery = true)
     List<Long> getIdsOfProducts(@Param("category_id")Long categoryId, Pageable pageable);
 
-    @Query(value = "select id from product where category_id=:category_id and brand=:brand and is_active=true",nativeQuery = true)
+    @Query(value = "select id from product where category_id=:category_id and brand=:brand",nativeQuery = true)
     List<Long> getIdOfSimilarProduct(@Param("category_id")Long id, @Param("brand") String brand, Pageable paging);
 
     @Query("select id from Product where name =:name")

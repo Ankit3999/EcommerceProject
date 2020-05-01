@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tothenew.ecommerce.utilities.HashMapConverter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Positive;
 import java.util.Map;
 
 @Entity
@@ -12,8 +13,12 @@ public class ProductVariation {
     @Id
     @GeneratedValue
     private Long id;
-    private Long productId;
+    //private Long productId;
+    @Positive
+    @Column(nullable = false)
     private Integer quantityAvailable;
+    @Positive
+    @Column(nullable = false)
     private Double price;
     private String metadata;
     private String primaryImageName;
@@ -25,7 +30,7 @@ public class ProductVariation {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "Product_ProductVariation_id")
+    @JoinColumn(name = "product_id")
     private Product product;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -90,13 +95,6 @@ PRIMARY_IMAGE_NAME*/
         this.product = product;
     }
 
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
 
     public Boolean getActive() {
         return isActive;

@@ -16,7 +16,7 @@ public class Category {
     private String name;
     //private Long parentId;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Product> products;
 
     @ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.EAGER)

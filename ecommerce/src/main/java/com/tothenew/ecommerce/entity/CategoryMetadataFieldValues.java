@@ -11,15 +11,18 @@ public class CategoryMetadataFieldValues {
     @Column(name = "field_values")
     private String fieldValues;
 
+    public CategoryMetadataFieldValues() {
+    }
+
     public CategoryMetadataFieldValues(String values) {
         this.fieldValues = values;
     }
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "categoriesId")
     private Category category;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "categoryMetaFieldId")
     private CategoryMetadataField categoryMetadataField;
 

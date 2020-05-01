@@ -25,6 +25,8 @@ import java.util.List;
 
 @RestController
 public class CustomerController {
+    //All working
+
     @Autowired
     ProductRepository productRepository;
 

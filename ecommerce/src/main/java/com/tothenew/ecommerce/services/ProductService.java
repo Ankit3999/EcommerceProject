@@ -161,14 +161,13 @@ public class ProductService {
         sendMail.sendEmail(email, subject, content);
     }
 
-    public ProductDto getProduct(Long productId, String email) throws NotFoundException {
-        Seller seller= sellerRepository.findByUsername(email);
+    public ProductDto getProduct(Long productId) throws NotFoundException {
+        String email=currentUserService.getUser();
+        Seller seller= sellerRepository.findByEmail(email);
         Optional<Product> product=  productRepository.findById(productId);
         Long[] l = {};
-        if (product.isPresent())
-        {
-            if ((product.get().getSeller().getUsername()).equals(seller.getUsername()))
-            {
+        if (product.isPresent()) {
+            if (/*(product.get().getSeller().getEmail()).equals(seller1.getEmail())*/(product.get().getSeller().getEmail()).equals(seller.getEmail())) {
                 ProductDto viewProductDTO = new ProductDto();
                 viewProductDTO.setBrand(product.get().getBrand());
                 viewProductDTO.setActive(product.get().getActive());
@@ -265,12 +264,14 @@ public class ProductService {
 
 
     public ViewProductDto viewSingleProductForSeller(Long productId) throws NotFoundException {
+        String email=currentUserService.getUser();
+        Seller seller1=sellerRepository.findByEmail(email);
         String sellerEmail = currentUserService.getUser();
         Seller seller = sellerRepository.findByEmail(sellerEmail);
         Optional<Product> product = productRepository.findById(productId);
         Long[] l = {};
         if (product.isPresent()) {
-            if ((product.get().getSeller().getEmail()).equals(seller.getEmail())) {
+            if((product.get().getSeller().getEmail()).equals(seller1.getEmail()) /*||(product.get().getSeller().getEmail()).equals(seller.getEmail())*/) {
                 ViewProductDto viewProductDTO = new ViewProductDto();
                 viewProductDTO.setId(product.get().getId());
                 viewProductDTO.setBrand(product.get().getBrand());
@@ -328,7 +329,7 @@ public class ProductService {
 
     public ViewProductDtoforCustomer viewSingleProductForCustomer(Long productId) throws NotFoundException {
         Optional<Product> product=  productRepository.findById(productId);
-        if (product.isPresent()&&product.get().getActive()==true&&product.get().getVariations().isEmpty()==false) {
+        if (product.isPresent()/*&&product.get().getVariations().isEmpty()==false*/) {
             ViewProductDtoforCustomer viewProductDTO = new ViewProductDtoforCustomer();
             viewProductDTO.setBrand(product.get().getBrand());
             viewProductDTO.setActive(product.get().getActive());

@@ -23,27 +23,11 @@ import javax.validation.Valid;
 
 @RestController
 public class RegistrationController {
-    //Logger logger = LoggerFactory.getLogger(NameOfTheClass.class);
+    //All working
+    private static final Logger logger=LoggerFactory.getLogger(RegistrationController.class);
 
-    @Autowired
-    CustomerRepository customerRepository;
-    @Autowired
-    CustomerService customerService;
-
-    @Autowired
-    SellerRepository sellerRepository;
-    @Autowired
-    SellerService sellerService;
-
-    @Autowired
-    CustomerImageDao customerImageDao;
-    @Autowired
-    SellerImageDao sellerImageDao;
     @Autowired
     RegistrationService registrationService;
-
-    @Autowired
-    MailVerification mailVerification;
 
     @Autowired
     TokenService tokenService;
@@ -53,13 +37,12 @@ public class RegistrationController {
     @ApiOperation("Uri for customer registration")
     @PostMapping("/register/customer")
     String saveCustomer(@Valid @RequestBody CustomerDto customerDto) throws PasswordException {
+        logger.info("Controller for registering customer Accessed");
+        logger.warn("Warning");
+        logger.error("Error Message");
         return registrationService.RegisterCustomer(customerDto);
     }
 
-    /*  @PostMapping("/register/upload/image")
-    ResponseEntity<Object> uploadImage(@Valid MultipartFile file, Customer customer) throws IOException {
-        return customerImageDao.uploadSingleImage(file, customer);
-    }*/
 
     @ApiOperation("uri for activating user after which user can login into application")
     @PutMapping("/verify/customer")
@@ -79,9 +62,4 @@ public class RegistrationController {
     String saveSeller(@Valid @RequestBody SellerDto sellerDto) throws PasswordException {
         return registrationService.RegisterSeller(sellerDto);
     }
-
-    /*@PostMapping("/register/upload/image")
-    ResponseEntity<Object> uploadImage(@Valid MultipartFile file, Seller seller) throws IOException {
-        return sellerImageDao.uploadSingleImage(file, seller);
-    }*/
 }

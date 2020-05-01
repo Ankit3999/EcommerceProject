@@ -11,6 +11,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -22,29 +23,29 @@ public class ProductVariationController {
 
 
     @ApiOperation("uri for seller to add a product variation")
-    @PostMapping("/addProductVariations/{productId}")
-    public void addNewProductVariation(@Valid @RequestBody ProductVariation productVariation, @PathVariable Long productId) throws JsonProcessingException {
+    @PostMapping("/seller/addProductVariations/{productId}")
+    public void addNewProductVariation(@Valid @RequestBody ProductVariation productVariation, @PathVariable Long productId) throws IOException {
 
         productVariationService.addNewProductVariation(productVariation, productId);
     }
 
 
     @ApiOperation("uri for seller to view a single product variation")
-    @GetMapping("/viewSingleProductVariation/{productVariationId}")
-    public ProductVariationDto getSingleProductVariation(@PathVariable Long productVariationId) throws JsonProcessingException {
+    @GetMapping("/seller/viewSingleProductVariation/{productVariationId}")
+    public ProductVariationDto getSingleProductVariation(@PathVariable Long productVariationId) throws IOException {
         return productVariationService.getSingleProductVariation(productVariationId);
     }
 
     @ApiOperation("uri for seller to get all product variation of a product")
-    @GetMapping("/getAllProductVariations/{productId}")
-    public List<ProductVariationDto> getAllProductVariations(@PathVariable Long productId) throws JsonProcessingException {
+    @GetMapping("/seller/getAllProductVariations/{productId}")
+    public List<ProductVariationDto> getAllProductVariations(@PathVariable Long productId) throws IOException {
         return productVariationService.getAllProductVariations(productId);
     }
 
 
     @ApiOperation("uri for seller to edit product Variation")
-    @PostMapping("/editProductVariations/{productVariationId}")
-    public void updateProductVariation(@RequestBody ProductVariation productVariation, @PathVariable Long productVariationId) throws JsonProcessingException {
+    @PostMapping("/seller/editProductVariations/{productVariationId}")
+    public void updateProductVariation(@RequestBody ProductVariation productVariation, @PathVariable Long productVariationId) throws IOException {
         productVariationService.editProductVariation(productVariation,productVariationId);
     }
 
