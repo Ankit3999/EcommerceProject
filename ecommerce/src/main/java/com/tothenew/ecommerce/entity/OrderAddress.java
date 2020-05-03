@@ -12,6 +12,8 @@ public class OrderAddress {
     private Long zipCode;
     private String label; /*(Ex. office/home)*/
 
+    public OrderAddress() {
+    }
 
     public OrderAddress(Address address){
         this.id=address.getId();

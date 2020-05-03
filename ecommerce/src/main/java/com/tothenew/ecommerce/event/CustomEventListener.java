@@ -29,14 +29,14 @@ public class CustomEventListener
 
     @EventListener
     public void AuthenticationFailEvent(AuthenticationFailureBadCredentialsEvent event) {
-        String username = event.getAuthentication().getPrincipal().toString();
+        String email = event.getAuthentication().getPrincipal().toString();
         Iterable<UserAttempts> userAttempts = userAttemptsRepository.findAll();
         int count=0;
         for (UserAttempts userAttempts1 : userAttempts) {
-            if (userAttempts1.getEmail().equals(username)) {
+            if (userAttempts1.getEmail().equals(email)) {
                 if (userAttempts1.getAttempts()>=3) {
-                    User user = userRepository.findByUsername(username);
-                    user.setLocked(true);
+                    User user = userRepository.findByEmail(email);
+                    user.setAccountNonLocked(false);
                     userRepository.save(user);
                     count++;
                     sendMail.sendEmail(user.getEmail(), "Regarding account", "your account has been locked");
@@ -50,8 +50,8 @@ public class CustomEventListener
         }
         if (count==0) {
             UserAttempts userAttempts1 = new UserAttempts();
-            User user = userRepository.findByUsername(username);
-            userAttempts1.setEmail(user.getUsername());
+            User user = userRepository.findByEmail(email);
+            userAttempts1.setEmail(user.getEmail());
             userAttempts1.setAttempts(1);
             userAttemptsRepository.save(userAttempts1);
         }

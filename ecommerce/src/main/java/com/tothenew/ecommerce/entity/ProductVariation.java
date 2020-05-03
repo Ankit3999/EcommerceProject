@@ -9,7 +9,7 @@ import java.util.Map;
 
 @Entity
 @Table
-public class ProductVariation {
+public class ProductVariation extends AuditInformation{
     @Id
     @GeneratedValue
     private Long id;

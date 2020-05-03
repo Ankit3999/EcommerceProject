@@ -5,7 +5,7 @@ import java.util.Set;
 
 @Entity
 @Table
-public class CategoryMetadataField {
+public class CategoryMetadataField extends AuditInformation{
     @Id
     @GeneratedValue
     private Long id;

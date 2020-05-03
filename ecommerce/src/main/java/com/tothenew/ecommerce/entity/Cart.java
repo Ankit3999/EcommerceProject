@@ -5,7 +5,7 @@ import java.util.Set;
 
 @Entity
 @Table
-public class Cart {
+public class Cart extends AuditInformation{
     @Id
     @GeneratedValue
     private Long customerUserId;

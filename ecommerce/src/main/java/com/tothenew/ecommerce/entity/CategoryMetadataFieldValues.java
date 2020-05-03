@@ -3,7 +3,7 @@ package com.tothenew.ecommerce.entity;
 import javax.persistence.*;
 
 @Entity
-public class CategoryMetadataFieldValues {
+public class CategoryMetadataFieldValues extends AuditInformation{
 
     @EmbeddedId
     private CategoryMetadataFieldValuesId id = new CategoryMetadataFieldValuesId();

@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table
-public class OrderStatus {
+public class OrderStatus extends AuditInformation{
     @Id
     @GeneratedValue
     private Long orderProductId;

@@ -7,7 +7,7 @@ import java.util.HashSet;
 
 @Entity
 @Table
-public class OrderProduct {
+public class OrderProduct extends AuditInformation{
     @Id
     @GeneratedValue
     private Long id;

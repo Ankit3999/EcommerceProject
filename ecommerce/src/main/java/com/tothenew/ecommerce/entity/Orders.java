@@ -6,7 +6,7 @@ import java.util.HashSet;
 
 @Entity
 @Table(name = "orders")
-public class Orders {
+public class Orders extends AuditInformation{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ids;

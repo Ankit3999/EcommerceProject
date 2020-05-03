@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table
-public class Product {
+public class Product extends AuditInformation{
     @Id
     @GeneratedValue
     private Long id;

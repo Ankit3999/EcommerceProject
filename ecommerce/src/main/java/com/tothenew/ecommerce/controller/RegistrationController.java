@@ -1,16 +1,9 @@
 package com.tothenew.ecommerce.controller;
 
-import com.tothenew.ecommerce.dao.CustomerImageDao;
-import com.tothenew.ecommerce.dao.SellerImageDao;
 import com.tothenew.ecommerce.services.TokenService;
 import com.tothenew.ecommerce.dto.CustomerDto;
 import com.tothenew.ecommerce.dto.SellerDto;
-import com.tothenew.ecommerce.mailing.MailVerification;
-import com.tothenew.ecommerce.repository.CustomerRepository;
-import com.tothenew.ecommerce.repository.SellerRepository;
-import com.tothenew.ecommerce.services.CustomerService;
 import com.tothenew.ecommerce.services.RegistrationService;
-import com.tothenew.ecommerce.services.SellerService;
 import io.swagger.annotations.ApiOperation;
 import org.bouncycastle.openssl.PasswordException;
 import org.slf4j.Logger;
@@ -24,6 +17,7 @@ import javax.validation.Valid;
 @RestController
 public class RegistrationController {
     //All working
+
     private static final Logger logger=LoggerFactory.getLogger(RegistrationController.class);
 
     @Autowired

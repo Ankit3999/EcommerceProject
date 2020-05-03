@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table
-public class ProductReview {
+public class ProductReview extends AuditInformation{
     @Id
     @GeneratedValue
     private Long id;
