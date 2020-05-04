@@ -22,7 +22,7 @@ public class ProductVariationController {
     ProductVariationService productVariationService;
 
 
-    @ApiOperation("uri for seller to add a product variation")
+    @ApiOperation("to add a product variation")
     @PostMapping("/seller/addProductVariations/{productId}")
     public void addNewProductVariation(@Valid @RequestBody ProductVariation productVariation, @PathVariable Long productId) throws IOException {
 

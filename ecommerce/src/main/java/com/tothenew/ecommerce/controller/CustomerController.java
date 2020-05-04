@@ -50,15 +50,18 @@ public class CustomerController {
     @Autowired
     ImageService imageService;
 
+    @ApiOperation(value = "homepage for customer")
     @GetMapping("/customer/home")
     ResponseEntity customerhome(){
         String msg="customer home";
         return new ResponseEntity(msg, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "to check currently logged in customer's profile")
     @GetMapping("/customer/profile")
     CustomerProfileDto viewprofile(HttpServletRequest request){ return customerService.viewProfile(); }
 
+    @ApiOperation(value = "to view currently logged in customer's profile image")
     @GetMapping("/customer/viewProfileImage")
     public ResponseEntity<Object> viewProfileImage(HttpServletRequest request) throws IOException {
         String username = currentUserService.getUser();
@@ -67,6 +70,7 @@ public class CustomerController {
         return imageService.downloadImage(filename,request);
     }
 
+    @ApiOperation(value = "to upload a pic for currently logged in customer")
     @PostMapping("/customer/uploadProfilePic")
     public ResponseEntity<Object> uploadFile(@RequestParam("file") MultipartFile file) throws IOException
     {
@@ -75,32 +79,38 @@ public class CustomerController {
         return imageService.uploadSingleImage(file,customer);
     }
 
+    @ApiOperation(value = "to update currently logged in customer's profile")
     @PatchMapping("/customer/profile/update")
     void updateprofile(@RequestBody CustomerDto customerDto){
         customerService.updateProfile(customerDto);
     }
 
+    @ApiOperation(value = "to view currently logged in customer's address")
     @GetMapping("/customer/address")
     List<AddressDto> viewAddress(){
         return userService.getAddress();
     }
 
+    @ApiOperation(value = "to add address for currently logged in customer")
     @PostMapping("/customer/address/add")
     String addAddress(@Valid @RequestBody AddressDto addressDto){
         return userService.addAddress(addressDto);
     }
 
+    @ApiOperation(value = "to delete an address for currently logged in customer")
     @DeleteMapping("/customer/address/delete")
-    String passwordDelete(@RequestParam("id") Long id){
+    String deleteAddress(@RequestParam("id") Long id){
         return userService.deleteAddress(id);
     }
 
+    @ApiOperation(value = "to update an address for currently logged in customer")
     @PutMapping("/customer/address/update/{id}")
     String updateAddress(@Valid @RequestBody AddressDto addressDto, @PathVariable Long id){
         userService.updateAddress(id, addressDto);
         return "Address with id "+id+" updated successfully";
     }
 
+    @ApiOperation(value = "to update password for currently logged in customer")
     @PatchMapping("/customer/password/update")
     String updatePassword(@RequestParam("password") String newPassword){
         return userService.updatePassword(newPassword);

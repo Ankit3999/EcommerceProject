@@ -126,7 +126,7 @@ public class ProductService {
         if (product1.getActive() == true) {
             message = "product is already active";
         }
-        product1.setActive(true);
+        productRepository.activateTheProduct(product1.getId());
         String email = product1.getSeller().getEmail();
         sendActDeactivationMail(email, product1, true);
         return "success";
@@ -143,7 +143,7 @@ public class ProductService {
         if (product1.getActive() == false) {
             message = "product is already deActive";
         }
-        product1.setActive(false);
+        productRepository.deactivateTheProduct(product1.getId());
         String email = product1.getSeller().getEmail();
         sendActDeactivationMail(email, product1, false);
         return "success";

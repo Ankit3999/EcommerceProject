@@ -200,9 +200,7 @@ public class ProductVariationService {
 
                         }
                     }
-
-                    if (count == map.size())
-                    {
+                    if (count == map.size()) {
                         Optional<ProductVariation> productVariation1 = productVariationRepository.findById(productVariationId);
                         ProductVariation productVariation2 = productVariation1.get();
                         productVariation2.setActive(productVariation.getActive());
@@ -212,11 +210,9 @@ public class ProductVariationService {
                         productVariation2.setInfoJson(info);
                         productVariationRepository.save(productVariation2);
                     }
-
                     else{
                         throw new NotFoundException(messageSource.getMessage("message21.txt",l,LocaleContextHolder.getLocale()));
                     }
-
                 } else {
                     throw  new  NullException(messageSource.getMessage("message22.txt",l,LocaleContextHolder.getLocale()));
                 }
@@ -225,9 +221,7 @@ public class ProductVariationService {
                 throw new NullException(messageSource.getMessage("message20.txt",l,LocaleContextHolder.getLocale()));
             }
         }
-
-        else
-        {
+        else {
             throw  new NullException(messageSource.getMessage("message18.txt",l,LocaleContextHolder.getLocale()));
         }
     }

@@ -58,5 +58,4 @@ public class CategoryMetadataFieldValues extends AuditInformation{
         this.id = id;
     }
 
-
 }

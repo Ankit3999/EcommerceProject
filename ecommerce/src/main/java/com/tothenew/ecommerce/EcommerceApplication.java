@@ -27,8 +27,7 @@ public class EcommerceApplication {
 
 
 	@Bean
-	public LocaleResolver localeResolver()
-	{
+	public LocaleResolver localeResolver() {
 		AcceptHeaderLocaleResolver acceptHeaderLocaleResolver = new AcceptHeaderLocaleResolver();
 		acceptHeaderLocaleResolver.setDefaultLocale(Locale.US);
 		return acceptHeaderLocaleResolver;

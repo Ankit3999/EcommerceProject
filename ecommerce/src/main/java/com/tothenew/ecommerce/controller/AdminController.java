@@ -32,6 +32,7 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+    @ApiOperation(value = "home page for admin")
     @GetMapping("/admin/home")
     public ResponseEntity adminHome(){
         String msg= "Admin home";
@@ -54,12 +55,12 @@ public class AdminController {
         return adminService.getAllRegisteredSellers(pageNo, pageSize, sortBy);
     }
 
-    @GetMapping("/admin/activate")
     @ApiOperation(value = "uri in which admin can activate a user")
+    @GetMapping("/admin/activate")
     public ResponseEntity activateCustomer(@RequestParam("id") Long id){ return userService.activateUser(id); }
 
-    @GetMapping("/admin/deactivate")
     @ApiOperation(value = "uri in which admin can deactivate a user")
+    @GetMapping("/admin/deactivate")
     public ResponseEntity deactivateCustomer(@RequestParam("id") Long id){ return userService.deActivateuser(id); }
 
     @ApiOperation(value = "uri in which admin can lock an user account")

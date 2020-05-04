@@ -83,10 +83,11 @@ public class CategoryController {
 
     @ApiOperation("to add metadata field values for a particular category and metadata field ")
     @PostMapping("/admin/addMetadataValues/{categoryId}/{metadataId}")
-    public void addMetadataValues(@Valid @RequestBody CategoryMetadataFieldValues categoryMetadataFieldValues,
-                                  @PathVariable(value = "categoryId") Long categoryId,
-                                  @PathVariable(value = "metadataId") Long metadataId) {
+    public String addMetadataValues(@Valid @RequestBody CategoryMetadataFieldValues categoryMetadataFieldValues,
+                                    @PathVariable(value = "categoryId") Long categoryId,
+                                    @PathVariable(value = "metadataId") Long metadataId) {
         categoryService.addMetadataValues(categoryMetadataFieldValues, categoryId, metadataId);
+        return "values added";
     }
 
     @ApiOperation("to update metadata field values")
