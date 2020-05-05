@@ -31,17 +31,11 @@ public class AuditInformation{
     @LastModifiedBy
     private String modifiedBy;
 
-    public Date getCreatedDate() {
-        return createdDate;
-    }
+    public Date getCreatedDate() { return createdDate; }
 
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
+    public void setCreatedDate(Date createdDate) { this.createdDate = createdDate; }
 
-    public Date getModifiedDate() {
-        return modifiedDate;
-    }
+    public Date getModifiedDate() { return modifiedDate; }
 
     public void setModifiedDate(Date modifiedDate) {
         this.modifiedDate = modifiedDate;

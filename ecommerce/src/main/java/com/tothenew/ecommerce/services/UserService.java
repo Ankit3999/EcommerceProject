@@ -23,15 +23,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -68,6 +67,19 @@ public class UserService {
     @Autowired
     public UserService(JavaMailSender javaMailSender){
         this.javaMailSender = javaMailSender;
+    }
+
+    public String getCurrentLoggedInUser()
+    {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username;
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails)principal).getUsername();
+        }
+        else {
+            username = principal.toString();
+        }
+        return username;
     }
 
     public ResponseEntity activateUser(Long id)
@@ -230,6 +242,7 @@ public class UserService {
         String username=currentUserService.getUser();
         User user=userRepository.findByEmail(username);
         user.setPassword(passwordEncoder.encode(newPassword));
+        user.setCreatedDate(new Date());
         userRepository.save(user);
         sendMail.sendPasswordResetConfirmationMail(user.getEmail());
         return "password changed successful";
@@ -269,6 +282,7 @@ public class UserService {
             } else {
                 User user2 = userRepository.findByUsername(token1.getName());
                 user2.setPassword(new BCryptPasswordEncoder().encode(password));
+                user2.setCreatedDate(new Date());
                 userRepository.save(user2);
                 tokenRepository.delete(token1);
             }

@@ -3,8 +3,11 @@ package com.tothenew.ecommerce.entity;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.sql.Timestamp;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -27,6 +30,11 @@ public class User extends AuditInformation{
     private boolean isExpired = false;
     private boolean isLocked = false;
     private boolean isAccountNonLocked;
+    private boolean passwordExpire=false;
+
+    public boolean isPasswordExpire() { return passwordExpire; }
+
+    public void setPasswordExpire(boolean passwordExpire) { this.passwordExpire = passwordExpire; }
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="user_role",joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id")
@@ -44,10 +52,7 @@ public class User extends AuditInformation{
         this.addresses = addresses;
     }
 
-
-    public User(){
-
-    }
+    public User(){ }
 
     public User(String username, String email, String firstName, String middleName, String lastName) {
         this.username=username;

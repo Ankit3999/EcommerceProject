@@ -11,12 +11,13 @@ public class AuditorAwareImpl implements AuditorAware<String> {
 
     @Autowired
     CurrentUserService currentUserService;
+    @Autowired
+    UserService userService;
 
     @Override
     public Optional<String> getCurrentAuditor() {
-        // your custom logic
         Optional<String> currentUser = Optional.empty();
-        String principal = currentUserService.getUser();
+        String principal = userService.getCurrentLoggedInUser();
         currentUser = Optional.of(principal);
         return currentUser;
     }

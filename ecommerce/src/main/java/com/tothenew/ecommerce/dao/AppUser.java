@@ -80,9 +80,7 @@ public class AppUser implements UserDetails {
         return !isExpired;
     }
     @Override
-    public boolean isAccountNonLocked() {
-        return !isLocked;
-    }
+    public boolean isAccountNonLocked() { return !isLocked; }
     @Override
     public boolean isCredentialsNonExpired() {
         return true;

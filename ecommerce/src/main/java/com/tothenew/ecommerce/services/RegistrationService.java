@@ -18,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 public class RegistrationService {
     @Autowired
@@ -49,6 +51,7 @@ public class RegistrationService {
                 customer.setActive(false);
                 customer.setPassword(passwordEncoder.encode(customer.getPassword()));
                 mailVerification.sendNotification(customer);
+                customer.setCreatedDate(new Date());
                 customerRepository.save(customer);
                 return customer.getEmail()+" successfully registered";
             }
@@ -89,6 +92,7 @@ public class RegistrationService {
                 String subject="About account Creation";
                 String text="Your account of company name "+seller.getCompanyName()+" is successfully created.";
                 sendMail.sendEmail(seller.getEmail(), subject, text);
+                seller.setCreatedDate(new Date());
                 sellerRepository.save(seller);
                 return seller.getEmail()+" successfully registered";
             }

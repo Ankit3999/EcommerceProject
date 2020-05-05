@@ -1,5 +1,6 @@
 package com.tothenew.ecommerce.controller;
 
+import com.tothenew.ecommerce.services.LoginService;
 import com.tothenew.ecommerce.services.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,17 +19,13 @@ public class LoginController {
 
     @Autowired
     private TokenStore tokenStore;
+    @Autowired
+    LoginService loginService;
 
     @ApiOperation(value = "to logout the currently logged in user")
     @PostMapping("/doLogout")
     public String logout(HttpServletRequest request){
-        String authHeader = request.getHeader("Authorization");
-        if (authHeader != null) {
-            String tokenValue = authHeader.replace("Bearer", "").trim();
-            OAuth2AccessToken accessToken = tokenStore.readAccessToken(tokenValue);
-            tokenStore.removeAccessToken(accessToken);
-        }
-        return "Logged out successfully";
+        return loginService.logout(request);
     }
 
     @ApiOperation(value = "for anonymous user")
