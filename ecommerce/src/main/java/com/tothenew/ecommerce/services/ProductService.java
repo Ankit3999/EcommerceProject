@@ -1,9 +1,6 @@
 package com.tothenew.ecommerce.services;
 
-import com.tothenew.ecommerce.dto.ProductDto;
-import com.tothenew.ecommerce.dto.ProductVariationDto;
-import com.tothenew.ecommerce.dto.ViewProductDto;
-import com.tothenew.ecommerce.dto.ViewProductDtoforCustomer;
+import com.tothenew.ecommerce.dto.*;
 import com.tothenew.ecommerce.entity.*;
 import com.tothenew.ecommerce.exception.NullException;
 import com.tothenew.ecommerce.mailing.SendMail;
@@ -17,8 +14,14 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.util.StringUtils;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.io.File;
 import java.util.*;
 
@@ -450,5 +453,6 @@ public class ProductService {
         }
         return list;
     }
+
 
 }

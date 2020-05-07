@@ -22,7 +22,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 
 @RestController
-public class  SellerController {
+public class SellerController {
     //All working
 
 

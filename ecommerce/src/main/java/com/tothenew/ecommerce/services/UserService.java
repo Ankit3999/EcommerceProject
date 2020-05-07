@@ -23,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -34,6 +35,9 @@ import java.util.*;
 
 @Service
 public class UserService {
+
+
+
     public int count;
     Long[] l = {};
     @Autowired
@@ -68,6 +72,26 @@ public class UserService {
     public UserService(JavaMailSender javaMailSender){
         this.javaMailSender = javaMailSender;
     }
+
+
+    @PreAuthorize("hasRole('ADMIN')")
+    public boolean ensureAdmin(){return true;
+    }
+
+    @PreAuthorize("hasRole('CUSTOMER')||hasRole('SELLER')||hasRole('ADMIN')")
+    public boolean ensureUser(){return true;}
+
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public void ensureCustomer(){
+    }
+
+    @PreAuthorize("hasRole('SELLER')")
+    public void ensureSeller(){
+    }
+
+    @PreAuthorize("hasRole('CUSTOMER')||hasRole('ADMIN')")
+    public boolean ensureCustomerOrAdmin(){return true;}
+
 
     public String getCurrentLoggedInUser()
     {

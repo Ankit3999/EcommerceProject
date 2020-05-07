@@ -61,7 +61,7 @@ public class ScheduledTask {
                         .atZone(ZoneId.systemDefault())
                         .toLocalDate();
                // Date updated = new Date(user.getUpdatePasswordDate().getYear(), user.getUpdatePasswordDate().getMonth(), user.getUpdatePasswordDate().getDate());
-                if (updatedDate.getMonthValue()+6 <= currentDate.getMonthValue()) {
+                if (currentDate.equals(updatedDate.plusMonths(6))) {
                     user.setPasswordExpire(true);
                     System.out.println(updatedDate);
                     String subject = "Reminder of password expiration";

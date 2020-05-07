@@ -6,21 +6,27 @@ import com.tothenew.ecommerce.entity.Category;
 import com.tothenew.ecommerce.entity.CategoryMetadataField;
 import com.tothenew.ecommerce.entity.CategoryMetadataFieldValues;
 import com.tothenew.ecommerce.repository.CategoryMetadataFieldRepository;
+import com.tothenew.ecommerce.repository.CategoryRepository;
 import com.tothenew.ecommerce.services.CategoryService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
-@RestController
+@Controller
 public class CategoryController {
     @Autowired
     CategoryMetadataFieldRepository categoryMetadataFieldRepository;
     @Autowired
     CategoryService categoryService;
+    @Autowired
+    CategoryRepository categoryRepository;
 
     //Admin APIs
     @ApiOperation("to add metadata fields")
@@ -96,6 +102,22 @@ public class CategoryController {
                                      @PathVariable(value = "categoryId") Long categoryId,
                                      @PathVariable(value = "metadataId") Long metadataId) {
         categoryService.updateMetadataValues(categoryMetadataFieldValues, categoryId, metadataId);
+    }
+
+    @ApiOperation("Count total number of category")
+    @RequestMapping(value = "/category/all", method = RequestMethod.GET)
+    public String count(Model model){
+        Iterable<Category> category= categoryRepository.findAll();
+        model.addAttribute("category", category);
+        //categoryRepository.count();
+        return "category";
+    }
+
+    @ApiOperation("to show product count in each category")
+    @RequestMapping(value = "/category/each", method = RequestMethod.GET)
+    public String getProduct(Model model){
+        model.addAttribute("eachCategory", categoryRepository.getProductForEachCategory());
+        return "product";
     }
 
     //Seller APIs

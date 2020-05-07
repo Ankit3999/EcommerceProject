@@ -1,7 +1,9 @@
 package com.tothenew.ecommerce.controller;
 
+import com.tothenew.ecommerce.Criteria.Criteria;
 import com.tothenew.ecommerce.dto.RegisteredCustomerDto;
 import com.tothenew.ecommerce.dto.RegisteredSellerDto;
+import com.tothenew.ecommerce.entity.User;
 import com.tothenew.ecommerce.repository.CustomerRepository;
 import com.tothenew.ecommerce.repository.SellerRepository;
 import com.tothenew.ecommerce.services.AdminService;
@@ -22,7 +24,8 @@ public class AdminController {
     @Autowired
     private CustomerRepository customerRepository;
 
-
+    @Autowired
+    Criteria criteria;
     @Autowired
     private SellerRepository sellerRepository;
 
@@ -55,9 +58,12 @@ public class AdminController {
         return adminService.getAllRegisteredSellers(pageNo, pageSize, sortBy);
     }
 
+
     @ApiOperation(value = "uri in which admin can activate a user")
     @GetMapping("/admin/activate")
-    public ResponseEntity activateCustomer(@RequestParam("id") Long id){ return userService.activateUser(id); }
+    public ResponseEntity activateCustomer(@RequestParam("id") Long id){
+        return userService.activateUser(id);
+    }
 
     @ApiOperation(value = "uri in which admin can deactivate a user")
     @GetMapping("/admin/deactivate")
@@ -70,4 +76,11 @@ public class AdminController {
     @ApiOperation(value = "uri in which admin can unlock an user account")
     @PutMapping("/admin/unlock")
     public ResponseEntity unlockUser(@RequestParam("id") Long id) { return adminService.unlockUser(id); }
+
+    @ApiOperation(value = "get a customer using criteria query")
+    @GetMapping("/admin/userget")
+    public User getProfile(@RequestParam("email") String email){
+        return criteria.findByEmail(email);
+    }
+
 }

@@ -3,6 +3,7 @@ package com.tothenew.ecommerce.repository;
 import com.tothenew.ecommerce.entity.Product;
 import com.tothenew.ecommerce.entity.Seller;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -14,7 +15,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
-public interface ProductRepository extends CrudRepository<Product, Long> {
+public interface ProductRepository extends CrudRepository<Product, Long> , JpaSpecificationExecutor<Product> {
     Product findByName(String name);
     List<Product> findAll();
     List<Product> findAll(Pageable pageable);

@@ -27,6 +27,14 @@ public class ProductController {
 
     //done
     //for admin
+    @ApiOperation("implementing criteria query")
+    @RequestMapping(value = "/product/criteria")
+    public void getProduct(@RequestParam(required = false) String name){
+
+    }
+
+
+
 
     @ApiOperation("to view a single product")
     @GetMapping("/admin/product/{productId}")
