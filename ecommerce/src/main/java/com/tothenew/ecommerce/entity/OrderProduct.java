@@ -3,11 +3,12 @@ package com.tothenew.ecommerce.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 
 @Entity
 @Table
-public class OrderProduct extends AuditInformation{
+public class OrderProduct extends AuditInformation implements Serializable {
     @Id
     @GeneratedValue
     private Long id;

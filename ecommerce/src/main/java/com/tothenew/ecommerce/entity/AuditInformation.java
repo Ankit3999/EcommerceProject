@@ -7,11 +7,12 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public class AuditInformation{
+public class AuditInformation implements Serializable {
 
     @Column(name = "created_date", updatable = false)
     @CreatedDate

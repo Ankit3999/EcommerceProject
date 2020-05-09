@@ -3,6 +3,7 @@ package com.tothenew.ecommerce.entity;
 import org.springframework.data.repository.cdi.Eager;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.Set;
 @Entity
 @Table(name = "customer")
 @PrimaryKeyJoinColumn(name = "user_id")
-public class Customer extends User{
+public class Customer extends User implements Serializable {
 
     Long contact;
 

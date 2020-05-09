@@ -3,6 +3,7 @@ package com.tothenew.ecommerce.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table
-public class Product extends AuditInformation{
+public class Product extends AuditInformation implements Serializable {
     @Id
     @GeneratedValue
     private Long id;

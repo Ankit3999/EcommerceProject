@@ -2,7 +2,6 @@ package com.tothenew.ecommerce.dto;
 
 import org.springframework.stereotype.Component;
 
-@Component
 public class CategoryDto {
     private Long id;
     private String name;

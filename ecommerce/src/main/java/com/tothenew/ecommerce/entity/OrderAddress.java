@@ -1,9 +1,10 @@
 package com.tothenew.ecommerce.entity;
 
 import javax.persistence.Embeddable;
+import java.io.Serializable;
 
 @Embeddable
-public class OrderAddress {
+public class OrderAddress implements Serializable {
     private Long id;
     private String city;
     private String state;

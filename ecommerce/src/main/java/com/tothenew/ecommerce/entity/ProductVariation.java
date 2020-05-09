@@ -5,11 +5,12 @@ import com.tothenew.ecommerce.utilities.HashMapConverter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Positive;
+import java.io.Serializable;
 import java.util.Map;
 
 @Entity
 @Table
-public class ProductVariation extends AuditInformation{
+public class ProductVariation extends AuditInformation implements Serializable {
     @Id
     @GeneratedValue
     private Long id;

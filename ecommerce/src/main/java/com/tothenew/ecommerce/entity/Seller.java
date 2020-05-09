@@ -4,13 +4,14 @@ import org.hibernate.validator.constraints.Range;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "seller")
 @PrimaryKeyJoinColumn(name = "id")
-public class Seller extends User{
+public class Seller extends User implements Serializable {
 
     @NotNull
     @Column(unique = true)

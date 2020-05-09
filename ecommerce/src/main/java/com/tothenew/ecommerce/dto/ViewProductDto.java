@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.Column;
 import java.util.List;
 
-@Component
+
 public class ViewProductDto extends Product {
     Long id;
     @Column(nullable = false,unique = true)

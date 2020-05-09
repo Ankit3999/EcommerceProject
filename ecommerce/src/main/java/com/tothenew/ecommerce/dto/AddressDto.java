@@ -3,7 +3,7 @@ package com.tothenew.ecommerce.dto;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.Size;
-@Component
+
 public class AddressDto {
     private String addressLine;
     private String city;

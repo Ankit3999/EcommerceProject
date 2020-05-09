@@ -7,9 +7,15 @@ import com.tothenew.ecommerce.entity.CategoryMetadataField;
 import com.tothenew.ecommerce.entity.CategoryMetadataFieldValues;
 import com.tothenew.ecommerce.repository.CategoryMetadataFieldRepository;
 import com.tothenew.ecommerce.repository.CategoryRepository;
+import com.tothenew.ecommerce.repository.ProductRepository;
 import com.tothenew.ecommerce.services.CategoryService;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
@@ -18,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class CategoryController {
@@ -104,6 +111,8 @@ public class CategoryController {
         categoryService.updateMetadataValues(categoryMetadataFieldValues, categoryId, metadataId);
     }
 
+
+    //using thymeleaf
     @ApiOperation("Count total number of category")
     @RequestMapping(value = "/category/all", method = RequestMethod.GET)
     public String count(Model model){
@@ -119,6 +128,21 @@ public class CategoryController {
         model.addAttribute("eachCategory", categoryRepository.getProductForEachCategory());
         return "product";
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     //Seller APIs
 

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 
-@Component
+
 public class ProductVariationDto extends ProductDto{
     List<String> fields;
     List<String> values;

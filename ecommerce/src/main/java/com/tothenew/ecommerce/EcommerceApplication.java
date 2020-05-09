@@ -1,10 +1,12 @@
 package com.tothenew.ecommerce;
 
+import com.tothenew.ecommerce.entity.Customer;
 import com.tothenew.ecommerce.entity.Product;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
@@ -19,6 +21,7 @@ import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 import java.time.LocalDateTime;
 import java.util.Locale;
 
+@EnableCaching
 @EnableAsync
 @EnableScheduling
 @RestController
@@ -41,6 +44,13 @@ public class EcommerceApplication {
 		redisTemplate.setConnectionFactory(jedisConnectionFactory());
 		return redisTemplate;
 	}
+
+/*	@Bean
+	RedisTemplate<String, Customer> redisTemplate() {
+		RedisTemplate<String, Customer> redisTemplate = new RedisTemplate<>();
+		redisTemplate.setConnectionFactory(jedisConnectionFactory());
+		return redisTemplate;
+	}*/
 
 
 

@@ -1,10 +1,11 @@
 package com.tothenew.ecommerce.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table
-public class Address {
+public class Address implements Serializable {
     @Id
     @GeneratedValue
     private Long id;

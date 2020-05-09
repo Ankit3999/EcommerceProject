@@ -4,11 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tothenew.ecommerce.enums.Status;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @Table
-public class OrderStatus extends AuditInformation{
+public class OrderStatus extends AuditInformation implements Serializable {
     @Id
     @GeneratedValue
     private Long orderProductId;

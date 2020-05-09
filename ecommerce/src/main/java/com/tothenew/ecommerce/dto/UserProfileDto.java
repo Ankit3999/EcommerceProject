@@ -2,7 +2,7 @@ package com.tothenew.ecommerce.dto;
 
 import org.springframework.stereotype.Component;
 
-@Component
+
 public class UserProfileDto {
     private Long id;
     private String firstName;

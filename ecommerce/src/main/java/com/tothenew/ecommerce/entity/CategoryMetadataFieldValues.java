@@ -1,9 +1,10 @@
 package com.tothenew.ecommerce.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class CategoryMetadataFieldValues extends AuditInformation{
+public class CategoryMetadataFieldValues extends AuditInformation implements Serializable {
 
     @EmbeddedId
     private CategoryMetadataFieldValuesId id = new CategoryMetadataFieldValuesId();

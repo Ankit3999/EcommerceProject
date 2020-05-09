@@ -1,4 +1,3 @@
-/*
 package com.tothenew.ecommerce.event;
 
 import com.tothenew.ecommerce.entity.User;
@@ -89,4 +88,3 @@ public class CustomEventListener {
     }
 
 }
-*/

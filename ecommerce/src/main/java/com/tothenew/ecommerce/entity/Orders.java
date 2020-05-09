@@ -1,12 +1,13 @@
 package com.tothenew.ecommerce.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 
 @Entity
 @Table(name = "orders")
-public class Orders extends AuditInformation{
+public class Orders extends AuditInformation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ids;

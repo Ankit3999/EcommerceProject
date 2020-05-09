@@ -1,11 +1,12 @@
 package com.tothenew.ecommerce.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @Table
-public class CategoryMetadataField extends AuditInformation{
+public class CategoryMetadataField extends AuditInformation implements Serializable {
     @Id
     @GeneratedValue
     private Long id;

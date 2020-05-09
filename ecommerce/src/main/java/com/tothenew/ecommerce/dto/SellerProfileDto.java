@@ -5,7 +5,7 @@ import jdk.nashorn.internal.objects.annotations.Getter;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.Size;
-@Component
+
 public class SellerProfileDto extends UserProfileDto{
     //@ValidGST
     @Size(min = 15, max = 15)

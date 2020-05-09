@@ -1,10 +1,11 @@
 package com.tothenew.ecommerce.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table
-public class ProductReview extends AuditInformation{
+public class ProductReview extends AuditInformation implements Serializable {
     @Id
     @GeneratedValue
     private Long id;

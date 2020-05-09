@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-@Component
+
 public class  ProductDto {
 
     @NotNull

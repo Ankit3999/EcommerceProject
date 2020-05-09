@@ -3,6 +3,7 @@ package com.tothenew.ecommerce.entity;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
@@ -13,7 +14,7 @@ import java.sql.Timestamp;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "user")
 @EntityListeners(AuditingEntityListener.class)
-public class User extends AuditInformation{
+public class User extends AuditInformation implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;

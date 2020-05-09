@@ -3,6 +3,7 @@ package com.tothenew.ecommerce.repository;
 import com.tothenew.ecommerce.entity.Product;
 import com.tothenew.ecommerce.entity.Seller;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,13 +16,13 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
-public interface ProductRepository extends CrudRepository<Product, Long> , JpaSpecificationExecutor<Product> {
+public interface ProductRepository extends CrudRepository<Product, Long>{
     Product findByName(String name);
     List<Product> findAll();
     List<Product> findAll(Pageable pageable);
     List<Product> findByCategoryId(Long id, Pageable pageable);
 
-    @Query(value = "select *from product where is_active=:'true'", nativeQuery = true)
+    @Query(value = "select * from product where is_active=:'true'", nativeQuery = true)
     Product activeProducts();
 
     @Query(value = "select *from product where is_active=:'false'", nativeQuery = true)
@@ -29,6 +30,9 @@ public interface ProductRepository extends CrudRepository<Product, Long> , JpaSp
 
     @Query(value = "select category_id from product where id=:id", nativeQuery = true)
     Long getCategoryId(@Param("id") Long productId);
+
+    @Query(value = "select * from product where id=:id", nativeQuery = true)
+    Product findOne(@Param("id") Long id);
 
     @Transactional
     @Modifying

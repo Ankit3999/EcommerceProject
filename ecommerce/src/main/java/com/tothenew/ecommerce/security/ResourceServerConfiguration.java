@@ -54,11 +54,11 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     @Override
     public void configure(final HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/").permitAll()
+                .antMatchers("/*").permitAll()
                 .antMatchers(AUTH_WHITELIST).permitAll()
-                .antMatchers("/category/*").permitAll()
-                .antMatchers("/product/*").permitAll()
-                .antMatchers("/password/*").permitAll()
+                .antMatchers("/category/**").anonymous()
+                .antMatchers("/product/**").anonymous()
+                .antMatchers("/password/**").permitAll()
                 .antMatchers("/main.js").permitAll()
                 .antMatchers("/register/*").anonymous()
                 .antMatchers("/verify/customer").anonymous()

@@ -1,11 +1,12 @@
 package com.tothenew.ecommerce.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @Table
-public class Cart extends AuditInformation{
+public class Cart extends AuditInformation implements Serializable {
     @Id
     @GeneratedValue
     private Long customerUserId;
