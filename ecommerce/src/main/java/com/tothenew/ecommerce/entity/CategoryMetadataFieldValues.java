@@ -1,9 +1,12 @@
 package com.tothenew.ecommerce.entity;
 
+import org.hibernate.envers.Audited;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@Audited
 public class CategoryMetadataFieldValues extends AuditInformation implements Serializable {
 
     @EmbeddedId

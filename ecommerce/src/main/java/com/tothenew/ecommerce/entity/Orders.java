@@ -1,5 +1,7 @@
 package com.tothenew.ecommerce.entity;
 
+import org.hibernate.envers.Audited;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -7,6 +9,7 @@ import java.util.HashSet;
 
 @Entity
 @Table(name = "orders")
+@Audited
 public class Orders extends AuditInformation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

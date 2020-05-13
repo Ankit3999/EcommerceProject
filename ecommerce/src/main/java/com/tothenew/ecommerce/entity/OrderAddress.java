@@ -1,9 +1,12 @@
 package com.tothenew.ecommerce.entity;
 
+import org.hibernate.envers.Audited;
+
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 @Embeddable
+@Audited
 public class OrderAddress implements Serializable {
     private Long id;
     private String city;

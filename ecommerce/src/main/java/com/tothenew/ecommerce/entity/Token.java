@@ -1,5 +1,7 @@
 package com.tothenew.ecommerce.entity;
 
+import org.hibernate.envers.Audited;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -7,6 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table
+@Audited
 public class Token {
     @Id
     @GeneratedValue

@@ -30,11 +30,21 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(ApiInfo.DEFAULT)
                 .select()
+                .apis(RequestHandlerSelectors.any())
+                .build();
+    }
+
+    /*@Bean
+    public Docket api()
+    {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(ApiInfo.DEFAULT)
+                .select()
                 .apis(RequestHandlerSelectors.basePackage("com.tothenew.ecommerce.controller"))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(DEFAULT)
-                .securitySchemes(Arrays.asList(apiKey()));
+                *//*.securitySchemes(Arrays.asList(apiKey())*//*;
     }
     private ApiKey apiKey(){return new ApiKey("Bearer", "Authorization", "header");}
-}
+*/}

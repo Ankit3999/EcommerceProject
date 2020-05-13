@@ -26,7 +26,6 @@ import java.util.Locale;
 @EnableScheduling
 @RestController
 @SpringBootApplication
-
 public class EcommerceApplication {
 
 	public static void main(String[] args) {

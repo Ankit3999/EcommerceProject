@@ -1,3 +1,4 @@
+/*
 package com.tothenew.ecommerce.event;
 
 import com.tothenew.ecommerce.entity.User;
@@ -64,7 +65,8 @@ public class CustomEventListener {
             userAttemptsRepository.save(userAttempts1);
         }
     }
-
+    */
+/*
     @EventListener
     public void AuthenticationPass(AuthenticationSuccessEvent event) {
         String email = event.getAuthentication().getPrincipal().toString();
@@ -88,3 +90,4 @@ public class CustomEventListener {
     }
 
 }
+*/

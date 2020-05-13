@@ -1,5 +1,6 @@
 package com.tothenew.ecommerce.entity;
 
+import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.Range;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -11,6 +12,7 @@ import java.util.Set;
 @Entity
 @Table(name = "seller")
 @PrimaryKeyJoinColumn(name = "id")
+@Audited
 public class Seller extends User implements Serializable {
 
     @NotNull

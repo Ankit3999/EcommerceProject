@@ -1,10 +1,13 @@
 package com.tothenew.ecommerce.entity;
 
+import org.hibernate.envers.Audited;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
+@Audited
 public class UserAttempts
 {
     @Id

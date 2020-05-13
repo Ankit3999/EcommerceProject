@@ -1,5 +1,6 @@
 package com.tothenew.ecommerce.entity;
 
+import org.hibernate.envers.Audited;
 import org.springframework.data.repository.cdi.Eager;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.util.Set;
 @Entity
 @Table(name = "customer")
 @PrimaryKeyJoinColumn(name = "user_id")
+@Audited
 public class Customer extends User implements Serializable {
 
     Long contact;

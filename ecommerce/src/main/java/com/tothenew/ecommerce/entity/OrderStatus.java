@@ -2,6 +2,7 @@ package com.tothenew.ecommerce.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tothenew.ecommerce.enums.Status;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,6 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table
+@Audited
 public class OrderStatus extends AuditInformation implements Serializable {
     @Id
     @GeneratedValue

@@ -1,6 +1,7 @@
 package com.tothenew.ecommerce.entity;
 
 
+import org.hibernate.envers.Audited;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Audited
 public class Role implements GrantedAuthority {
     @Id
     private Long id;

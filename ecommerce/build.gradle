@@ -25,6 +25,11 @@ dependencies {
 	compile group: 'redis.clients', name: 'jedis', version: '3.3.0'
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '2.2.6.RELEASE'
 
+	//envers
+	compile group: 'org.hibernate', name: 'hibernate-envers', version: '5.4.15.Final'
+
+	compile group: 'javassist', name: 'javassist', version: '3.12.1.GA'
+
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'

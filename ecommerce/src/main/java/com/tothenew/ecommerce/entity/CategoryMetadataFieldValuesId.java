@@ -1,9 +1,12 @@
 package com.tothenew.ecommerce.entity;
 
+import org.hibernate.envers.Audited;
+
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 @Embeddable
+@Audited
 public class CategoryMetadataFieldValuesId implements Serializable {
     private Long categoryId;
     private Long categoryMetadataFieldId;

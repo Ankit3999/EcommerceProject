@@ -1,5 +1,6 @@
 package com.tothenew.ecommerce.entity;
 
+import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table
+@Audited
 public class Category extends AuditInformation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

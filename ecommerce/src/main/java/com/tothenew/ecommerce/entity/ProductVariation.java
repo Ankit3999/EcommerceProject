@@ -2,6 +2,7 @@ package com.tothenew.ecommerce.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tothenew.ecommerce.utilities.HashMapConverter;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import javax.validation.constraints.Positive;
@@ -10,6 +11,7 @@ import java.util.Map;
 
 @Entity
 @Table
+@Audited
 public class ProductVariation extends AuditInformation implements Serializable {
     @Id
     @GeneratedValue

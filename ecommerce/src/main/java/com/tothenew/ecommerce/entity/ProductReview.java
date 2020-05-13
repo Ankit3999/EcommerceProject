@@ -1,10 +1,13 @@
 package com.tothenew.ecommerce.entity;
 
+import org.hibernate.envers.Audited;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table
+@Audited
 public class ProductReview extends AuditInformation implements Serializable {
     @Id
     @GeneratedValue

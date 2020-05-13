@@ -31,8 +31,6 @@ public class ScheduledTask {
     @Autowired
     CurrentUserService currentUserService;
     @Autowired
-    Product product;
-    @Autowired
     ProductVariationRepository productVariationRepository;
     @Autowired
     SellerRepository sellerRepository;
