@@ -1,3 +1,4 @@
+
 package com.tothenew.ecommerce.scheduler;
 
 import com.tothenew.ecommerce.entity.Product;
@@ -24,6 +25,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @Component
 public class ScheduledTask {
     @Autowired
@@ -49,7 +51,7 @@ public class ScheduledTask {
 
     public void scheduleTaskWithInitialDelay() {}
 
-    @Scheduled(cron = "0 0 0 * * ?")
+    /*@Scheduled(cron = "0 0 0 * * ?")
     public void passwordExpired() {
         List<User> userList = userRepository.findAll();
         for (User user : userList) {
@@ -70,7 +72,7 @@ public class ScheduledTask {
             }
         }
     }
-
+*/
     @Scheduled(cron = "0 0 0 * * ?")
     public void scheduleTaskWithCronExpression() {
         String email=currentUserService.getUser();

@@ -49,6 +49,7 @@ public class Bootstrap implements ApplicationRunner
 
             Admin admin1 = new Admin("ankit12","myemail@ttn.com", "admin", "", "admin");
             admin1.setPassword(passwordEncoder.encode("pass"));
+            admin1.setPasswordExpire(false);
             admin1.addRole(admin);
             admin1.addRole(seller);
             admin1.addRole(customer);
@@ -64,6 +65,7 @@ public class Bootstrap implements ApplicationRunner
             customer1.addRole(customer);
             customer1.addAddress(new Address("gurgaon","haryana", "india", "C64", 778344l, "home"));
             customer1.setActive(true);
+            customer1.setPasswordExpire(false);
             userRepository.save(customer1);
 
             /*Seller seller1 = new Seller("anku12","seller.seller@ttn.com", "seller", "", "seller","bh7ht754r5", "amalgam pvt. lmt.", 9999988817l);
@@ -76,6 +78,7 @@ public class Bootstrap implements ApplicationRunner
 
             Seller seller1=new Seller("ankit", "youremail@ttn.com", "ankit", "", "","3424jk2j4k232e7", "tothenew", 9876378493l);
             userRepository.save(seller1);
+            seller1.setPasswordExpire(false);
             System.out.println("Total users saved::"+userRepository.count());
 
 
@@ -308,6 +311,7 @@ public class Bootstrap implements ApplicationRunner
             productRepository.save(product1);
 
 
+            System.out.println("\n\n\n***the application went up***");
         }
 
     }

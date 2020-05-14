@@ -1,6 +1,7 @@
 package com.tothenew.ecommerce.repository;
 
 import com.tothenew.ecommerce.entity.Product;
+import com.tothenew.ecommerce.entity.ProductVariation;
 import com.tothenew.ecommerce.entity.Seller;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -58,4 +59,7 @@ public interface ProductRepository extends CrudRepository<Product, Long>{
 
     @Query("select id from Product where name =:name")
     public Long findProduct(@Param(value = "name") String name);
+
+    @Query(value = "select *from product_variation where product_id= :id", nativeQuery = true)
+    ProductVariation findProductVariation(@Param(value = "id") Long id);
 }

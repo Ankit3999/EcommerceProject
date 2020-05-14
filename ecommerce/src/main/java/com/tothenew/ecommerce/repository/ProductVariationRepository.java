@@ -15,5 +15,9 @@ public interface ProductVariationRepository extends CrudRepository<ProductVariat
 
     @Query(value = "select name from product where id in (select product_id from product_variation where quantity_available=:0) and seller_user_id=:id;);", nativeQuery = true)
     public List<Object[]> outOfStockProducts(@Param(value = "id") Long id);
+
+    @Query(value = "select price from product_variation where id =:id",nativeQuery = true)
+    public Long getPrice(@Param(value = "id") Long id);
+
 }
 

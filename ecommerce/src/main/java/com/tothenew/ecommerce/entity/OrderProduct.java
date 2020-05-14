@@ -2,30 +2,88 @@ package com.tothenew.ecommerce.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.envers.Audited;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 
 @Entity
 @Table
 @Audited
-public class OrderProduct extends AuditInformation implements Serializable {
+@EntityListeners(AuditingEntityListener.class)
+public class OrderProduct implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
     private Long price;
-    private Long productVariationMetadata;
+    private String productVariationMetadata;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="order_id")
     Orders orders;
 
-    @OneToOne(mappedBy = "order_product")
-    ProductVariation product_variation;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = " PRODUCT_VARIATION_ID")
+    private ProductVariation productVariation;
+
+    @Column(name = "created_date", updatable = false)
+    @CreatedDate
+    @Temporal(TemporalType.DATE)
+    private Date createdDate;
+
+    @Column(name = "modified_date")
+    @LastModifiedDate
+    @Temporal(TemporalType.DATE)
+    private Date modifiedDate;
+
+    @Column(name = "created_by")
+    @CreatedBy
+    private String createdBy;
+
+    @Column(name = "modified_by")
+    @LastModifiedBy
+    private String modifiedBy;
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
+    }
 
     @JsonIgnore
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "OrderProductStatusId")
     private OrderStatus order_status;
 
@@ -37,13 +95,9 @@ public class OrderProduct extends AuditInformation implements Serializable {
         this.order_status = order_status;
     }
 
-    public ProductVariation getProduct_variation() {
-        return product_variation;
-    }
+    public ProductVariation getProductVariation() { return productVariation; }
 
-    public void setProduct_variation(ProductVariation product_variation) {
-        this.product_variation = product_variation;
-    }
+    public void setProductVariation(ProductVariation productVariation) { this.productVariation = productVariation; }
 
     public Orders getOrders() {
         return orders;
@@ -69,17 +123,15 @@ public class OrderProduct extends AuditInformation implements Serializable {
         this.price = price;
     }
 
-    public Long getProductVariationMetadata() {
+    public String getProductVariationMetadata() {
         return productVariationMetadata;
     }
 
-    public void setProductVariationMetadata(Long productVariationMetadata) {
+    public void setProductVariationMetadata(String productVariationMetadata) {
         this.productVariationMetadata = productVariationMetadata;
     }
 
-
-
-   /*ID
+/*ID
 ORDER_ID
 QUANTITY
 PRICE

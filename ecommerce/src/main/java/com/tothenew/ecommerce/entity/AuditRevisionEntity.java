@@ -5,7 +5,6 @@ import org.hibernate.envers.DefaultRevisionEntity;
 import org.hibernate.envers.RevisionEntity;
 
 import javax.persistence.*;
-
 @Entity
 @RevisionEntity(AuditRevisionListener.class)
 @Table(name = "REVINFO", schema = "audit")

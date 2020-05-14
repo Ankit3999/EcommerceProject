@@ -1,15 +1,17 @@
 package com.tothenew.ecommerce.entity;
 
 import org.hibernate.envers.Audited;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
 @Audited
-public class UserAttempts
-{
+
+public class UserAttempts {
     @Id
     @GeneratedValue
     Long id;

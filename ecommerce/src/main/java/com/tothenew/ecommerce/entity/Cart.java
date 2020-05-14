@@ -1,36 +1,94 @@
 package com.tothenew.ecommerce.entity;
 
 import org.hibernate.envers.Audited;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
 @Table
 @Audited
-public class Cart extends AuditInformation implements Serializable {
+@EntityListeners(AuditingEntityListener.class)
+public class Cart implements Serializable {
     @Id
     @GeneratedValue
-    private Long customerUserId;
+    private Long id;
     private Long quantity;
     private Boolean isWishlistItem;
-    private Long productVariationId;
 
     @OneToOne
     @JoinColumn(name = "customer_id")
     Customer customer;
 
 
-    @OneToMany(mappedBy = "cart")
-    private Set<ProductVariation> product_variationSet;
+    @ManyToOne
+    @JoinColumn(name = "product_variation_id")
+    private ProductVariation productVariation;
 
-    public Set<ProductVariation> getProduct_variationSet() {
-        return product_variationSet;
+
+    @Column(name = "created_date", updatable = false)
+    @CreatedDate
+    @Temporal(TemporalType.DATE)
+    private Date createdDate;
+
+    @Column(name = "modified_date")
+    @LastModifiedDate
+    @Temporal(TemporalType.DATE)
+    private Date modifiedDate;
+
+    @Column(name = "created_by")
+    @CreatedBy
+    private String createdBy;
+
+    @Column(name = "modified_by")
+    @LastModifiedBy
+    private String modifiedBy;
+
+    public Date getCreatedDate() {
+        return createdDate;
     }
 
-    public void setProduct_variationSet(Set<ProductVariation> product_variationSet) {
-        this.product_variationSet = product_variationSet;
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
+    }
+
+    public ProductVariation getProductVariation() {
+        return productVariation;
+    }
+
+    public void setProductVariation(ProductVariation productVariation) {
+        this.productVariation = productVariation;
     }
 
     public Customer getCustomer() {
@@ -41,12 +99,12 @@ public class Cart extends AuditInformation implements Serializable {
         this.customer = customer;
     }
 
-    public Long getCustomerUserId() {
-        return customerUserId;
+    public Long getId() {
+        return id;
     }
 
-    public void setCustomerUserId(Long customerUserId) {
-        this.customerUserId = customerUserId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getQuantity() {
@@ -65,12 +123,5 @@ public class Cart extends AuditInformation implements Serializable {
         isWishlistItem = wishlistItem;
     }
 
-    public Long getProductVariationId() {
-        return productVariationId;
-    }
-
-    public void setProductVariationId(Long productVariationId) {
-        this.productVariationId = productVariationId;
-    }
 }
 

@@ -1,15 +1,14 @@
 package com.tothenew.ecommerce;
 
-import com.tothenew.ecommerce.entity.Customer;
+import com.tothenew.ecommerce.rabbitMQConfig.RabbitMQProperties;
 import com.tothenew.ecommerce.entity.Product;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.domain.AuditorAware;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 
-import java.time.LocalDateTime;
 import java.util.Locale;
 
 @EnableCaching
@@ -26,6 +24,7 @@ import java.util.Locale;
 @EnableScheduling
 @RestController
 @SpringBootApplication
+@EnableConfigurationProperties(RabbitMQProperties.class)
 public class EcommerceApplication {
 
 	public static void main(String[] args) {
@@ -43,6 +42,7 @@ public class EcommerceApplication {
 		redisTemplate.setConnectionFactory(jedisConnectionFactory());
 		return redisTemplate;
 	}
+
 
 /*	@Bean
 	RedisTemplate<String, Customer> redisTemplate() {
