@@ -25,7 +25,6 @@ public class SendMail {
         mailMessage.setSubject(subject);
         mailMessage.setFrom("kumsag11@gmail.com");
         mailMessage.setText(text);
-
         mailSender.send(mailMessage);
     }
 }

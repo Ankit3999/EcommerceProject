@@ -51,7 +51,7 @@ public class ScheduledTask {
 
     public void scheduleTaskWithInitialDelay() {}
 
-    /*@Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "0 0 0 * * ?")
     public void passwordExpired() {
         List<User> userList = userRepository.findAll();
         for (User user : userList) {
@@ -72,7 +72,7 @@ public class ScheduledTask {
             }
         }
     }
-*/
+
     @Scheduled(cron = "0 0 0 * * ?")
     public void scheduleTaskWithCronExpression() {
         String email=currentUserService.getUser();

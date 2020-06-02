@@ -75,8 +75,7 @@ public class CategoryController {
     @GetMapping("/admin/viewAllCategories")
     public List<ViewCategoryDto> getAllCategories(@RequestParam(name = "pageNo", required = true, defaultValue = "0") Integer pageNo,
                                                     @RequestParam(name = "pageSize", required = true, defaultValue = "10") Integer pageSize,
-                                                    @RequestParam(name = "sortBy", defaultValue = "id") String sortBy)
-    {
+                                                    @RequestParam(name = "sortBy", defaultValue = "id") String sortBy) {
         return categoryService.viewAllCategories(pageNo, pageSize, sortBy);
     }
 

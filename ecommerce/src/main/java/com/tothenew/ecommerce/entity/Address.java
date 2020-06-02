@@ -14,7 +14,7 @@ import java.util.Date;
 
 @Entity
 @Table
-@Audited
+
 @EntityListeners(AuditingEntityListener.class)
 public class Address implements Serializable {
     @Id

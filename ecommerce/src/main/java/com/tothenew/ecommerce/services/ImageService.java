@@ -138,7 +138,6 @@ public class ImageService {
                         Files.delete(Paths.get(file1.getPath()));
                     }
                 }
-
                 String value = customer.getId().toString()+"_";
                 Files.move(path, path.resolveSibling(value+"." + ext.get()));
             }

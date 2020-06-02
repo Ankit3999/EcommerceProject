@@ -3,18 +3,17 @@ package com.tothenew.ecommerce.bootloader;
 
 import com.tothenew.ecommerce.entity.*;
 import com.tothenew.ecommerce.repository.*;
+import com.tothenew.ecommerce.utilities.Randomiser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
 
 @Component
-public class Bootstrap implements ApplicationRunner
-{
+public class Bootstrap implements ApplicationRunner {
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -33,11 +32,46 @@ public class Bootstrap implements ApplicationRunner
     CategoryMetadataFieldRepository categoryMetadataFieldRepository;
     @Autowired
     CategoryMetadataFieldValuesRepository categoryMetadataFieldValuesRepository;
+    @Autowired
+    Randomiser randomiser;
+    @Autowired
+    PasswordEncoder passwordEncoder;
+    @Autowired
+    OrdersRepository ordersRepository;
+    @Autowired
+    OrderProductRepository orderProductRepository;
 
     @Override
-    public void run(ApplicationArguments args) throws Exception
-    {
-        if(userRepository.count()<1) {
+    public void run(ApplicationArguments args) throws Exception {
+
+
+       /* for(int i = 1; i<100000; i++){
+            Customer customer=new Customer(randomiser.randomAlphaNumeric(), randomiser.randomEmail(),
+                    randomiser.randomString(), randomiser.randomString(), randomiser.randomString(),
+                    passwordEncoder.encode(randomiser.randomString()),false,true,false,false,true,
+                    false,randomiser.randomDate(),randomiser.randomDate(),randomiser.randomString(),randomiser.randomString(), randomiser.randomContact());
+            customer.addRole(new Role(1003l, "ROLE_CUSTOMER"));
+            customerRepository.save(customer);
+        }
+*/
+        //saving orders
+
+/*        Iterable<Customer> customerList = customerRepository.getTopCustomer();
+        for(Customer customer: customerList){
+            Orders orders=new Orders(Long.valueOf(randomiser.randomNumber()), randomiser.randomDate(),
+                    "COD", randomiser.randomDate(), randomiser.randomDate(),
+                    randomiser.randomString(), randomiser.randomString(), customer);
+            orders.setOrderAddress(new OrderAddress(randomiser.randomString(), randomiser.randomString(), "India", randomiser.pincode()));
+
+            OrderProduct orderProduct=new OrderProduct(Long.valueOf(randomiser.randomNumber()), orders,
+                    randomiser.randomDate(), randomiser.randomDate(), randomiser.randomString(),
+                    randomiser.randomString());
+            ordersRepository.save(orders);
+            orderProductRepository.save(orderProduct);
+        }*/
+
+
+        /*if(userRepository.count()<1) {
             PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
             Role admin = new Role(1001l, "ROLE_ADMIN");
@@ -68,13 +102,13 @@ public class Bootstrap implements ApplicationRunner
             customer1.setPasswordExpire(false);
             userRepository.save(customer1);
 
-            /*Seller seller1 = new Seller("anku12","seller.seller@ttn.com", "seller", "", "seller","bh7ht754r5", "amalgam pvt. lmt.", 9999988817l);
+            *//*Seller seller1 = new Seller("anku12","seller.seller@ttn.com", "seller", "", "seller","bh7ht754r5", "amalgam pvt. lmt.", 9999988817l);
             seller1.setPassword(passwordEncoder.encode("pass"));
             seller1.addRole(seller);
             seller1.addAddress(new Address("kanpur", "UP", "india", "fg95", 2342342l, "home"));
             seller1.setActive(true);
 
-            userRepository.save(seller1);*/
+            userRepository.save(seller1);*//*
 
             Seller seller1=new Seller("ankit", "youremail@ttn.com", "ankit", "", "","3424jk2j4k232e7", "tothenew", 9876378493l);
             userRepository.save(seller1);
@@ -87,7 +121,7 @@ public class Bootstrap implements ApplicationRunner
 
 
 
-            /*Category fashion = new Category("fashion");
+            *//*Category fashion = new Category("fashion");
             Category clothing = new Category("clothing");
             fashion.addSubCategory(clothing);
             Category men = new Category("men");
@@ -95,7 +129,7 @@ public class Bootstrap implements ApplicationRunner
             clothing.addSubCategory(men);
             clothing.addSubCategory(women);
 
-            categoryRepository.save(fashion);*/
+            categoryRepository.save(fashion);*//*
 
             System.out.println("total categories saved - "+ categoryRepository.count());
 
@@ -133,11 +167,11 @@ public class Bootstrap implements ApplicationRunner
             //ProductVariation buy1 = productVariationRepository.findById(14L).get();
             //ProductVariation buy2 = productVariationRepository.findById(15L).get();
 
-            /*OrderProduct orderProduct1 = new OrderProduct();
+            *//*OrderProduct orderProduct1 = new OrderProduct();
             orderProduct1.setProduct_variation(buy1);
 
             OrderProduct orderProduct2 = new OrderProduct();
-            orderProduct2.setProduct_variation(buy2);*/
+            orderProduct2.setProduct_variation(buy2);*//*
 
 
 //  ===============================================================================
@@ -297,9 +331,9 @@ public class Bootstrap implements ApplicationRunner
 
 
             productRepository.save(product1);
-            /*categoryMetadataFieldValuesRepository.save(categoryMetadataFieldValues);
+            *//*categoryMetadataFieldValuesRepository.save(categoryMetadataFieldValues);
             categoryMetadataFieldValuesRepository.save(categoryMetadataFieldValues1);
-            */productRepository.save(product2);
+            *//*productRepository.save(product2);
             productRepository.save(product3);
 
             //product1.setCategory(men);
@@ -311,8 +345,16 @@ public class Bootstrap implements ApplicationRunner
             productRepository.save(product1);
 
 
+            ProductReview productReview=new ProductReview();
+            productReview.setId("001w");
+            productReview.setRating("good");
+            productReview.setReview("its a good product must buy");
+            productReview.setCustomerId(25l);
+            productReview.setProductId(1002l);
+            productReviewRepository.save(productReview);
+
             System.out.println("\n\n\n***the application went up***");
-        }
+        }*/
 
     }
 }

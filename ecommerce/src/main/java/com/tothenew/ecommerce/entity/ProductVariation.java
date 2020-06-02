@@ -19,7 +19,7 @@ import java.util.Set;
 
 @Entity
 @Table
-@Audited
+
 @EntityListeners(AuditingEntityListener.class)
 public class ProductVariation implements Serializable {
     @Id

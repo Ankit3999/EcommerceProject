@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Entity
 @Table
-@Audited
+
 public class Admin extends User implements Serializable {
     public Admin(String username, String email, String firstName, String middleName, String lastName) {
         super(username, email, firstName, middleName, lastName);

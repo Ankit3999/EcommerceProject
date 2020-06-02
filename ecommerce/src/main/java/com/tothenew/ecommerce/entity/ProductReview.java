@@ -6,29 +6,32 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-@Entity
-@Table
-@Audited
+
+
+@Document
 @EntityListeners(AuditingEntityListener.class)
 public class ProductReview implements Serializable {
     @Id
     @GeneratedValue
-    private Long id;
+    private String id;
     private String review;
     private String rating;
 
-    @ManyToOne
+    private Long customerId;
+    private Long productId;
+ /*   @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
-    private Product product;
+    private Product product;*/
 
     @Column(name = "created_date", updatable = false)
     @CreatedDate
@@ -47,6 +50,20 @@ public class ProductReview implements Serializable {
     @Column(name = "modified_by")
     @LastModifiedBy
     private String modifiedBy;
+
+    public ProductReview(String id, String review, String rating) {
+        this.id = id;
+        this.review = review;
+        this.rating = rating;
+    }
+
+    public Long getCustomerId() { return customerId; }
+
+    public void setCustomerId(Long customerId) { this.customerId = customerId; }
+
+    public Long getProductId() { return productId; }
+
+    public void setProductId(Long productId) { this.productId = productId; }
 
     public Date getCreatedDate() {
         return createdDate;
@@ -85,30 +102,13 @@ public class ProductReview implements Serializable {
         this.rating = rating;
     }
 
-    public ProductReview() {
-    }
+    public ProductReview() { }
 
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

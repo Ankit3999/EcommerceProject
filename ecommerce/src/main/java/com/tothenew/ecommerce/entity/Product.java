@@ -14,7 +14,7 @@ import java.util.*;
 
 @Entity
 @Table
-@Audited
+
 @EntityListeners(AuditingEntityListener.class)
 public class Product implements Serializable {
     @Id
@@ -96,9 +96,9 @@ public class Product implements Serializable {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private Set<ProductVariation> variations;
 
-    @JsonIgnore
+ /*   @JsonIgnore
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<ProductReview> product_reviews;
+    private List<ProductReview> product_reviews;*/
 
     public Product() {
     }
@@ -118,13 +118,6 @@ public class Product implements Serializable {
         this.isActive=isActive;
     }
 
-    public List<ProductReview> getProduct_reviews() {
-        return product_reviews;
-    }
-
-    public void setProduct_reviews(List<ProductReview> product_reviews) {
-        this.product_reviews = product_reviews;
-    }
 
     public Set<ProductVariation> getVariations() {
         return variations;
@@ -226,7 +219,7 @@ public class Product implements Serializable {
         }
     }
 
-    public void addReview(ProductReview review){
+    /*public void addReview(ProductReview review){
         if(review != null){
             if(product_reviews== null)
                 product_reviews = new ArrayList<>();
@@ -234,7 +227,7 @@ public class Product implements Serializable {
             product_reviews.add(review);
             review.setProduct(this);
         }
-    }
+    }*/
 
     /*ID
 SELLER_USER_ID

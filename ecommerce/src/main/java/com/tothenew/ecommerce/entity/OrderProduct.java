@@ -15,7 +15,7 @@ import java.util.HashSet;
 
 @Entity
 @Table
-@Audited
+
 @EntityListeners(AuditingEntityListener.class)
 public class OrderProduct implements Serializable {
     @Id
@@ -24,7 +24,7 @@ public class OrderProduct implements Serializable {
     private Long price;
     private String productVariationMetadata;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name="order_id")
     Orders orders;
 
@@ -49,6 +49,20 @@ public class OrderProduct implements Serializable {
     @Column(name = "modified_by")
     @LastModifiedBy
     private String modifiedBy;
+
+
+    public OrderProduct() {
+    }
+
+    public OrderProduct(Long price, Orders orders, Date createdDate, Date modifiedDate, String createdBy, String modifiedBy) {
+        this.price = price;
+        this.orders = orders;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
+        this.createdBy = createdBy;
+        this.modifiedBy = modifiedBy;
+    }
+
 
     public Date getCreatedDate() {
         return createdDate;

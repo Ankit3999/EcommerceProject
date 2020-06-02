@@ -7,10 +7,15 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface CustomerRepository extends CrudRepository<Customer, Integer>, PagingAndSortingRepository<Customer, Integer> {
     Customer findByEmail(String email);
     Customer findByUsername(String username);
+
+    @Query(value = "select *from user inner join customer on user.id=customer.user_id order by contact limit 50000", nativeQuery = true)
+    Iterable<Customer> getTopCustomer();
 
     @Query(value = "select email from customer where id=:id", nativeQuery = true)
     String findEmail(@Param(value = "id") Long id);

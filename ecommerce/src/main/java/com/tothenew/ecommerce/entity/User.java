@@ -20,7 +20,6 @@ import java.sql.Timestamp;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "user")
 @EntityListeners(AuditingEntityListener.class)
-@Audited
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -57,6 +56,10 @@ public class User implements Serializable {
     @Column(name = "modified_by")
     @LastModifiedBy
     private String modifiedBy;
+
+    public User(Long id) {
+        this.id=id;
+    }
 
     public Date getCreatedDate() {
         return createdDate;
@@ -111,6 +114,26 @@ public class User implements Serializable {
     }
 
     public User(){ }
+
+    public User(String username, String email, String firstName, String middleName, String lastName, String password, Boolean isDeleted, Boolean isActive, boolean isExpired, boolean isLocked, boolean isAccountNonLocked, boolean passwordExpire, Date createdDate, Date modifiedDate, String createdBy, String modifiedBy) {
+
+        this.username = username;
+        this.email = email;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.password = password;
+        this.isDeleted = isDeleted;
+        this.isActive = isActive;
+        this.isExpired = isExpired;
+        this.isLocked = isLocked;
+        this.isAccountNonLocked = isAccountNonLocked;
+        this.passwordExpire = passwordExpire;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
+        this.createdBy = createdBy;
+        this.modifiedBy = modifiedBy;
+    }
 
     public User(String username, String email, String firstName, String middleName, String lastName) {
         this.username=username;

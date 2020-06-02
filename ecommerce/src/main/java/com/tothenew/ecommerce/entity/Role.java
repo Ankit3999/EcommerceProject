@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Audited
+
 
 public class Role implements GrantedAuthority {
     @Id
@@ -25,6 +25,10 @@ public class Role implements GrantedAuthority {
         this.id = id;
         this.role = role;
         this.users = users;
+    }
+
+    public Role(Long id) {
+        this.id = id;
     }
 
     public Role() {

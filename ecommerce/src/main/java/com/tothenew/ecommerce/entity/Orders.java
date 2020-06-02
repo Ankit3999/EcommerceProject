@@ -15,7 +15,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "orders")
-@Audited
 @EntityListeners(AuditingEntityListener.class)
 public class Orders implements Serializable {
     @Id
@@ -85,6 +84,20 @@ public class Orders implements Serializable {
     @Embedded
     OrderAddress orderAddress;
 
+    public Orders() {
+    }
+
+    public Orders(Long amountPaid, Date dateCreated, String paymentMethod, Date createdDate, Date modifiedDate, String createdBy, String modifiedBy, Customer customer) {
+        this.amountPaid = amountPaid;
+        this.dateCreated = dateCreated;
+        this.paymentMethod = paymentMethod;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
+        this.createdBy = createdBy;
+        this.modifiedBy = modifiedBy;
+        this.customer = customer;
+    }
+
     public OrderAddress getOrderAddress() {
         return orderAddress;
     }
@@ -93,11 +106,11 @@ public class Orders implements Serializable {
         this.orderAddress = orderAddress;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "customerId")
     private Customer customer;
 
-    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "orders", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Set<OrderProduct> order_product;
 
     public Set<OrderProduct> getOrder_product() {

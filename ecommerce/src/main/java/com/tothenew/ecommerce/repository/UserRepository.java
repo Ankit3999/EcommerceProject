@@ -20,6 +20,9 @@ public interface UserRepository extends CrudRepository<User,Long>, PagingAndSort
     User findByEmail(String email);
     List<User> findAll();
 
+    @Query(value = "select id from user where id between 1 and 1000", nativeQuery = true)
+    List<Long> getIds();
+
     @Query(value = "select id from user where id in(select user_id from user_role where role_id in(select id from role where role='ROLE_CUSTOMER'))",nativeQuery = true)
     List<Long> findIdOfCustomers(Pageable pageable);
 

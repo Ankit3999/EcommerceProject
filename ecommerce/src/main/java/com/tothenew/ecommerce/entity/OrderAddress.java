@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Embeddable
-@Audited
+
 @EntityListeners(AuditingEntityListener.class)
 public class OrderAddress implements Serializable {
     private Long id;
@@ -74,6 +74,13 @@ public class OrderAddress implements Serializable {
     }
 
     public OrderAddress() {
+    }
+
+    public OrderAddress(String city, String state, String country, Long zipCode) {
+        this.city = city;
+        this.state = state;
+        this.country = country;
+        this.zipCode = zipCode;
     }
 
     public OrderAddress(Address address){

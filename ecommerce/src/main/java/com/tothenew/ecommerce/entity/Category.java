@@ -15,7 +15,7 @@ import java.util.Set;
 
 @Entity
 @Table
-@Audited
+
 @EntityListeners(AuditingEntityListener.class)
 public class Category implements Serializable {
     @Id
@@ -50,7 +50,7 @@ public class Category implements Serializable {
 
     @Column(name = "created_by")
     @CreatedBy
-    private String createdBy;
+    private User createdBy;
 
     @Column(name = "modified_by")
     @LastModifiedBy
@@ -72,13 +72,9 @@ public class Category implements Serializable {
         this.modifiedDate = modifiedDate;
     }
 
-    public String getCreatedBy() {
-        return createdBy;
-    }
+    public User getCreatedBy() { return createdBy; }
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
+    public void setCreatedBy(User createdBy) { this.createdBy = createdBy; }
 
     public String getModifiedBy() {
         return modifiedBy;

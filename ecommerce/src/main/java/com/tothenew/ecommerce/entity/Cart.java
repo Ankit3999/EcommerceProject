@@ -14,7 +14,7 @@ import java.util.Set;
 
 @Entity
 @Table
-@Audited
+
 @EntityListeners(AuditingEntityListener.class)
 public class Cart implements Serializable {
     @Id

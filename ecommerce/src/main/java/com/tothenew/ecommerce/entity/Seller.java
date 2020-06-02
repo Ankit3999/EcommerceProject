@@ -12,7 +12,7 @@ import java.util.Set;
 @Entity
 @Table(name = "seller")
 @PrimaryKeyJoinColumn(name = "id")
-@Audited
+
 public class Seller extends User implements Serializable {
 
     @NotNull
