@@ -14,7 +14,7 @@ import java.util.*;
 
 @Entity
 @Table
-
+@Audited
 @EntityListeners(AuditingEntityListener.class)
 public class Product implements Serializable {
     @Id

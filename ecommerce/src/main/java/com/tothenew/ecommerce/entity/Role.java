@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Entity
 
-
+@Audited
 public class Role implements GrantedAuthority {
     @Id
     private Long id;

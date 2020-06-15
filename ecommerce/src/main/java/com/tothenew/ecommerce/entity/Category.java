@@ -15,7 +15,7 @@ import java.util.Set;
 
 @Entity
 @Table
-
+@Audited
 @EntityListeners(AuditingEntityListener.class)
 public class Category implements Serializable {
     @Id

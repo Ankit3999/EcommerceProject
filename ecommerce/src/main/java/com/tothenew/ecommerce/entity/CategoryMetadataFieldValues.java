@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-
+@Audited
 @EntityListeners(AuditingEntityListener.class)
 public class CategoryMetadataFieldValues  implements Serializable {
 

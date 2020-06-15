@@ -50,7 +50,7 @@ public class ScheduledTask {
     public void scheduleTaskWithFixedDelay() {}
 
     public void scheduleTaskWithInitialDelay() {}
-
+    
     @Scheduled(cron = "0 0 0 * * ?")
     public void passwordExpired() {
         List<User> userList = userRepository.findAll();

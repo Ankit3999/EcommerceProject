@@ -56,6 +56,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
         http.authorizeRequests()
                 .antMatchers("/*").permitAll()
                 .antMatchers(AUTH_WHITELIST).anonymous()
+                .antMatchers("/batch/*").permitAll()
                 .antMatchers("/category/**").anonymous()
                 .antMatchers("/product/**").anonymous()
                 .antMatchers("/password/**").permitAll()

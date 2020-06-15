@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table
-
+@Audited
 public class Token {
     @Id
     @GeneratedValue

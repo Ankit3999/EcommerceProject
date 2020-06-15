@@ -15,7 +15,7 @@ import java.util.HashSet;
 
 @Entity
 @Table
-
+@Audited
 @EntityListeners(AuditingEntityListener.class)
 public class OrderProduct implements Serializable {
     @Id

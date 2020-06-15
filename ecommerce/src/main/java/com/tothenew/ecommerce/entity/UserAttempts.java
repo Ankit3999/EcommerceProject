@@ -9,7 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-
+@Audited
 
 public class UserAttempts {
     @Id

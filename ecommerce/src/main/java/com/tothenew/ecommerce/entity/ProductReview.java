@@ -16,6 +16,7 @@ import java.util.Date;
 
 @Document
 @EntityListeners(AuditingEntityListener.class)
+@Audited
 public class ProductReview implements Serializable {
     @Id
     @GeneratedValue

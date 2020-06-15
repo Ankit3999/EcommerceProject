@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Embeddable
-
+@Audited
 @EntityListeners(AuditingEntityListener.class)
 public class CategoryMetadataFieldValuesId implements Serializable {
     private Long categoryId;

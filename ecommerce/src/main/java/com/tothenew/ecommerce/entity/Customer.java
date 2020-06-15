@@ -12,6 +12,7 @@ import java.util.*;
 @Table(name = "customer")
 @PrimaryKeyJoinColumn(name = "user_id")
 @EntityListeners(AuditingEntityListener.class)
+@Audited
 public class Customer extends User implements Serializable {
 
     Long contact;

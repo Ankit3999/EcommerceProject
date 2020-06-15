@@ -15,6 +15,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "orders")
+@Audited
 @EntityListeners(AuditingEntityListener.class)
 public class Orders implements Serializable {
     @Id

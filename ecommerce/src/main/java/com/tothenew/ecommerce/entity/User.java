@@ -19,6 +19,7 @@ import java.sql.Timestamp;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "user")
+@Audited
 @EntityListeners(AuditingEntityListener.class)
 public class User implements Serializable {
     @Id
